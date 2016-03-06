@@ -281,7 +281,7 @@ teamviewer(){
 	}
 	Else
 	{
-		MsgBox, 4, , Ã…ben Teamviewer?
+		MsgBox, 4, , Åben Teamviewer?
 			IfMsgBox, No
 				return
 		run, C:\Program Files (x86)\TeamViewer\TeamViewer.exe
@@ -296,16 +296,16 @@ teamviewer(){
 teamviewer_shiftuser(){
 	IfWinActive TeamViewer
 	{
-		WinActivate, Computere og kontakter ; focus pÃ¥ login menu og gÃ¥ videre
+		WinActivate, Computere og kontakter ; focus på login menu og gå videre
 	}
 	IfWinActive Computere og kontakter
 	{
 		; login eller skift bruger
-		Click 20,36 ;click i hjÃ¸rne
+		Click 20,36 ;click i hjørne
 		Sleep 100
 		WinGetText, OutputVar, A ; hent synlig tekst
-		out := RegExMatch(OutputVar, "E-mail") ; se om der stÃ¥r email noget sted
-		if(out=0){ ; hvis der ikke stÃ¥r Email noget sted (vi er logget ind)
+		out := RegExMatch(OutputVar, "E-mail") ; se om der står email noget sted
+		if(out=0){ ; hvis der ikke står Email noget sted (vi er logget ind)
 			Sleep 100
 			Click 20,272 ;log ud
 			Sleep 200
@@ -380,8 +380,8 @@ vpn(){
 	Run C:\Program Files (x86)\Cisco\Cisco AnyConnect Secure Mobility Client\vpnui.exe
 	Sleep %sl%
 	WinGetText, OutputVar, A ; hent synlig tekst
-	out := RegExMatch(OutputVar, "Disconnect") ; se om der stÃ¥r Disconnect noget sted
-	if(out=0){ ;hvis der ikke stÃ¥r Disconnect sÃ¥ skal vi ligge ind
+	out := RegExMatch(OutputVar, "Disconnect") ; se om der står Disconnect noget sted
+	if(out=0){ ;hvis der ikke står Disconnect så skal vi ligge ind
 		tab(1)
 		Send vpn.spejdersport.dk{enter}
 	}else{
@@ -397,7 +397,7 @@ vpn(){
 
 
 
-;/////////////////////- Functioner til fÃ¦llesbrug -////////////////////
+;/////////////////////- Functioner til fællesbrug -////////////////////
 
 checkTitle(reg){
 	WinGetTitle, title, A
