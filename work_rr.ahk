@@ -8,8 +8,7 @@ CheckPopups:
 	Return
 
 CheckPopupsReload:
-		Send {Enter}
-		;ControlClick, Button1  ; retry task
+		ControlClick, Button1, A  ; retry task
 		SetTimer,CheckPopupsReload,Off
 	Return
 
@@ -74,15 +73,24 @@ Return
 :*:10.::
 	Send 10.45.0.
 Return
-:*:10,::
+:*:10,,::
 	Send 10.45.0.
 Return
 :*:192::
 	Send 192.168.
 Return
 
-
 ;////////////////////- F-taster -////////////////////
+
+
+
+
+;////////////////////- Numpad -////////////////////
+
+NumLock::
+	SetNumlockState, on ;set numlock on
+	unoSoft_num()
+Return
 
 
 ;////////////////////- Ctrl -////////////////////
@@ -160,6 +168,8 @@ Return
 <#w:: googleChromeINK()
 
 <#k:: kontrolpanel()
+
+<#o:: outlook()
 
 
 
@@ -264,6 +274,15 @@ kontrolpanel(){
 }
 kontrolpanel_printer(){
 	Run, control printers
+}
+
+outlook(){
+	if(WinExist("ahk_exe outlook.exe"))
+	{
+		WinActivate, ahk_exe outlook.exe
+		Return
+	}
+	run outlook.exe
 }
 
 reloadAHK(){
@@ -379,7 +398,15 @@ unoSoft(){
 unoSoft_num(){
 	IfWinActive Uno Soft
 	{
-		ControlClick, Button6
+		if(WinExist("Tastatur") && WinExist("ahk_exe SoftPhone.exe"))
+		{
+			WinActivate, Tastatur
+		}else{
+			ControlClick, Button6
+		}
+	}
+	if (WinActive("Tastatur") && WinActive("ahk_exe SoftPhone.exe")){
+		Send !{F4}
 	}
 }
 
