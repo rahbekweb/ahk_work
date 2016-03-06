@@ -86,7 +86,10 @@ return
 
 ^<#t:: teamviewer()
 
-$^1:: teamviewer_shiftuser()
+$^1:: 
+	teamviewer_shiftuser()
+	unoSoft_num()
+Return
 
 
 ;////////////////////- Shift -////////////////////
@@ -281,6 +284,13 @@ tmc(){
 
 unoSoft(){
 	Run C:\Program Files (x86)\Uno Telefoni\Uno Soft\SoftPhone.exe
+}
+
+unoSoft_num(){
+	IfWinActive Uno Soft
+	{
+		ControlClick, Button6
+	}
 }
 
 vpn(){
