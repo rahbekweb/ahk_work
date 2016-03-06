@@ -128,8 +128,15 @@ Return
 
 <#u:: unoSoft()
 
+<#w:: googleChromeINK()
 
 ;////////////////////- Functioner til genveje -////////////////////
+
+
+
+googleChromeINK(){
+	Run, chrome.exe -incognito http://www.google.com
+}
 
 
 kommentarAfsnitStart(){
@@ -245,6 +252,11 @@ teamviewer_close(){
 }
 
 tmc(){
+	IfWinExist Total Commander
+	{
+		WinActivate Total Commander
+		Return
+	}
 	Run, C:\totalcmd\TOTALCMD64.EXE
 	Sleep 500
 	WinGetText, OutputVar, a
