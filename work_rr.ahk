@@ -71,6 +71,16 @@ Return
 	kommentarAfsnitEnd()
 Return
 
+:*:10.::
+	Send 10.45.0.
+Return
+:*:10,::
+	Send 10.45.0.
+Return
+:*:192::
+	Send 192.168.
+Return
+
 
 ;////////////////////- F-taster -////////////////////
 
