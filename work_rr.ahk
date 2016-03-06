@@ -86,9 +86,18 @@ return
 
 ^<#t:: teamviewer()
 
+^<#p:: kontrolpanel_printer()
+
+^<#r:: run cmd.exe
+
 $^1:: 
 	teamviewer_shiftuser()
 	unoSoft_num()
+	cmd_ping()
+Return
+
+$^2::
+	cmd_ipconfig()
 Return
 
 
@@ -133,9 +142,29 @@ Return
 
 <#w:: googleChromeINK()
 
+<#k:: kontrolpanel()
+
+<#p::
+	RunAs, Administrator, SPVPN2010
+	Run, services.msc
+	RunAs
+Return
+
 ;////////////////////- Functioner til genveje -////////////////////
 
 
+cmd_ipconfig(){
+	IfWinActive C:\Windows\system32\cmd.exe
+	{
+		send ipconfig{enter}
+	}
+}
+cmd_ping(){
+	IfWinActive C:\Windows\system32\cmd.exe
+	{
+		send ping{SPACE}
+	}
+}
 
 googleChromeINK(){
 	Run, chrome.exe -incognito http://www.google.com
@@ -175,6 +204,13 @@ kommentarAfsnitEnd(){
 	}
 }
 
+
+kontrolpanel(){
+	run, %SystemRoot%\system32\control.exe
+}
+kontrolpanel_printer(){
+	Run, control printers
+}
 
 reloadAHK(){
 	if(checkTitle("\.ahk - Sublime")){
