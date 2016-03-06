@@ -71,13 +71,22 @@ Return
 Return
 
 :*:10.::
-	Send 10.45.0.
+	if(! WinActive("ahk_exe chrome.exe")){
+		Send 1
+	} 
+	Send 0.45.0.
 Return
 :*:10,,::
-	Send 10.45.0.
+	if(! WinActive("ahk_exe chrome.exe")){
+		Send 1
+	}
+	Send 0.45.0.
 Return
 :*:192::
-	Send 192.168.
+	if(! WinActive("ahk_exe chrome.exe")){
+		Send 1
+	}
+	Send 92.168.
 Return
 
 ;////////////////////- F-taster -////////////////////
