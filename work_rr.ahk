@@ -131,6 +131,36 @@ Return
 
 ^<#r:: run cmd.exe
 
+^<#d::
+	if !(docD := WinExist("Dokumenter")){
+		run, %userprofile%\documents
+		WinWait, Dokumenter
+	}else{
+		if (docD = WinExist("A")){
+			WinClose, ahk_id %docD%
+		}else{
+			WinActivate, ahk_id %docD%
+		}
+	}
+;run, %A_MyDocuments%
+Return
+
+^<#f::
+	if !(picD := WinExist("Billeder")){
+		run, %userprofile%\pictures
+		WinWait, Billeder
+	}else{
+		if (picD = WinExist("A")){
+			WinClose, ahk_id %picD%
+		}else{
+			WinActivate, ahk_id %picD%
+		}
+	}
+Return
+
+^<#n:: Run, notepad.exe
+^<#c:: Run, calc.exe
+
 $^1:: 
 	teamviewer_shiftuser()
 	unoSoft_num()
@@ -175,9 +205,21 @@ Return
 
 <#v:: vpn()
 
-<#n:: Run, notepad.exe
+<#n::
+	if(notepadD := WinExist("ahk_exe notepad.exe")){
+		WinActivate, ahk_id %notepadD%
+	}else{
+		Run, notepad.exe
+	}
+Return
 
-<#c:: Run, calc.exe
+<#c::
+	if(calcD := WinExist("Lommeregner")){
+		WinActivate, ahk_id %calcD%
+	}else{
+		Run, calc.exe
+	}
+Return
 
 <#u:: unoSoft()
 
@@ -193,14 +235,12 @@ Return
 
 
 cmd_ipconfig(){
-	IfWinActive C:\Windows\system32\cmd.exe
-	{
+	if(WinActive("ahk_exe cmd.exe")){
 		send ipconfig{enter}
 	}
 }
 cmd_ping(){
-	IfWinActive C:\Windows\system32\cmd.exe
-	{
+	if(WinActive("ahk_exe cmd.exe")){
 		send ping{SPACE}
 	}
 }
