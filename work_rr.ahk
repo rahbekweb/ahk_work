@@ -362,7 +362,7 @@ reloadAHK(){
 teamviewer(){
 	IfWinExist TeamViewer
 	{
-		WinActivate, TeamViewer
+		WinActivate, Computere og kontakter
 	}
 	Else
 	{
@@ -386,7 +386,7 @@ teamviewer_shiftuser(){
 	IfWinActive Computere og kontakter
 	{
 		; login eller skift bruger
-		Click 20,36 ;click i hjørne
+		Click 20,40 ;click i hjørne
 		Sleep 100
 		WinGetText, OutputVar, A ; hent synlig tekst
 		out := RegExMatch(OutputVar, "E-mail") ; se om der står email noget sted
@@ -426,7 +426,7 @@ tmc(){
 		Return
 	}
 	Run, C:\totalcmd\TOTALCMD64.EXE
-	Sleep 500
+	Sleep 1000
 	WinGetText, OutputVar, a
 	;k := RegExReplace(OutputVar, "\n.*\n*","")
 	k := SubStr(OutputVar, 1, 1)
