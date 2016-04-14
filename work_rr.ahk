@@ -253,25 +253,25 @@ googleChromeINK(){
 illustrator_exportPdf(){
 	if(WinActive("ahk_exe Illustrator.exe")){
 		Send ^!s
-		Sleep 500
+		Sleep 1500
 		ControlGetText, OutputVar, Edit1, A
 		ny:= RegExReplace(OutputVar, " copy.ai$",".pdf")
 		WinClose, %ny%
 		Send %ny%
-		Sleep 200
+		Sleep 500
 		tab(1)
 		SendMore("{down}",2)
 		tab(1)
 		sleep 50
 		Send {enter}
-		Sleep 200
+		Sleep 500
 
 		WinGetText, visuText, a
 		re := RegExMatch(visuText, "Do you want to replace it")
 		if(re>0){
 			Send {enter}
 		}
-		Sleep 1500
+		Sleep 3000
 		IfWinExist Save Adobe PDF
 		{
 			WinActivate Save Adobe PDF
