@@ -89,6 +89,67 @@ Return
 	Send 92.168.
 Return
 
+	;////////////////////- IpButikker -////////////////////
+
+	::ip1::
+		Send 10.45.1.
+	Return
+	::ip2::
+		Send 192.168.107.
+	Return
+	::ip3::
+		Send 192.168.108.
+	Return
+	::ip4::
+		Send 192.168.105.
+	Return
+	::ip5::
+		Send 192.168.109.
+	Return
+	::ip6::
+		Send 192.168.106.
+	Return
+	::ip8::
+		Send 192.168.110.
+	Return
+	::ip9::
+		Send 192.168.103.
+	Return
+	::ip10::
+		Send 192.168.102.
+	Return
+	::ip11::
+		Send 192.168.100.
+	Return
+	::ip14::
+		Send 192.168.111.
+	Return
+	::ip15::
+		Send 192.168.113.
+	Return
+	::ip16::
+		Send 192.168.112.
+	Return
+	::ip17::
+		Send 192.168.114.
+	Return
+	::ip18::
+		Send 192.168.115.
+	Return
+	::ip19::
+		Send 192.168.116.
+	Return
+	::ip20::
+		Send 192.168.117.
+	Return
+	::ip21::
+		Send 192.168.118.
+	Return
+	::ip22::
+		Send 192.168.119.
+	Return
+
+
 ;////////////////////- F-taster -////////////////////
 
 
