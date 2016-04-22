@@ -71,22 +71,13 @@ Return
 Return
 
 :*:10.::
-	if(! WinActive("ahk_exe chrome.exe")){
-		Send 1
-	} 
-	Send 0.45.0.
+	Send 10.45.0.
 Return
 :*:10,,::
-	if(! WinActive("ahk_exe chrome.exe")){
-		Send 1
-	}
-	Send 0.45.0.
+	Send 10.45.0.
 Return
 :*:192::
-	if(! WinActive("ahk_exe chrome.exe")){
-		Send 1
-	}
-	Send 92.168.
+	Send 192.168.
 Return
 
 	;////////////////////- IpButikker -////////////////////
@@ -304,7 +295,7 @@ adobebridge(){
 		Return
 	}
 	run Bridge.exe
-	Sleep 3000
+	Sleep 5000
 	WinActivate, ahk_exe Bridge.exe
 }
 
@@ -444,7 +435,7 @@ teamviewer(){
 			IfMsgBox, No
 				return
 		run, C:\Program Files (x86)\TeamViewer\TeamViewer.exe
-		Sleep 500
+		Sleep 1000
 
 		WinActivate, Computere og kontakter
 		Click 20,36
