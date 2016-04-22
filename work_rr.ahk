@@ -290,10 +290,23 @@ Return
 
 <#o:: outlook()
 
+<#b:: adobebridge()
+
 
 
 ;////////////////////- Functioner til genveje -////////////////////
 
+
+adobebridge(){
+	if(WinExist("ahk_exe Bridge.exe"))
+	{
+		WinActivate, ahk_exe Bridge.exe
+		Return
+	}
+	run Bridge.exe
+	Sleep 3000
+	WinActivate, ahk_exe Bridge.exe
+}
 
 cmd_ipconfig(){
 	if(WinActive("ahk_exe cmd.exe")){
