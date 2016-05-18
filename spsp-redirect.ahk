@@ -6,22 +6,25 @@ f3::
 	koere = 1
     Send ^c
     Send, {ALT DOWN}{TAB}{ALT UP}
+    Sleep 250
     Send ^a^v
     Send, {ALT DOWN}{TAB}{ALT UP}
-    Sleep 500
+    Sleep 250
     Send, {Right}
     Send, ^c
     Send, {ALT DOWN}{TAB}{ALT UP}
+    Sleep 250   
     Send, {TAB}
+    Sleep 250
     Send ^a^v
-    Sleep 500
     Send, {TAB}{TAB}{TAB}404 %Time%{TAB}{TAB}{ENTER}
-    Sleep 1000
+    Sleep 1500
     Send {BS}
-    Sleep 1000
-    Click, 300 300
+    Sleep 1800
+    Click, 310 310
     Send ^a
     Send  {ALT DOWN}{TAB}{ALT UP}
+    Sleep 500
     Send {LEFT}{LEFT}
     Send %Time%
     Send {DOWN}{RIGHT}

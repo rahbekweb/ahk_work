@@ -112,6 +112,9 @@ Return
 	::ip11::
 		Send 192.168.100.
 	Return
+	::ip12::
+		Send 192.168.102.
+	Return
 	::ip14::
 		Send 192.168.111.
 	Return
