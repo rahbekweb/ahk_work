@@ -148,7 +148,7 @@ Return
     Sleep 200
     Send {ENTER}
     Sleep 2000
-    Send {BS}
+    Send !{LEFT}
     Sleep 1200
     Click, 310 310
     Send ^a
@@ -172,6 +172,78 @@ Return
             Return
     Send ^{Numpad0}
 
+Return
+
+
+
+^Numpad9::
+    FormatTime, Time,, dd-MM-yyyy HH:mm:ss tt
+    WinActivate, ahk_exe EXCEL.EXE
+    Sleep 100
+    Send {Home}{RIGHT}{RIGHT}{RIGHT}{RIGHT}{RIGHT}{RIGHT}
+    Send ^c
+    
+    Sleep 200
+
+    Ny := clipboard
+
+    Send {Home}{RIGHT}
+    Send ^c
+    Sleep 200
+    
+    ;Run, chrome.exe -incognito https://myaccumolo.com/indhold/Website/Shop/Items/Items.aspx?mainArea=5&menuId=138&siteguid=10649
+
+    WinActivate, ahk_exe chrome.exe
+
+    Sleep 500
+    Send {Home}
+    Sleep 200
+    Click 124, 254
+
+    Sleep 2000
+    Click 300, 450
+    Send ^a^v
+    Sleep 200
+    Send {Enter}
+
+    Sleep 1000
+    click 906, 596
+    Sleep 1500
+
+    MsgBox, 4, , klar?
+        IfMsgBox, No
+            Return
+    
+    Send ^{HOME}
+    Sleep 200
+    Click 338, 509
+    Sleep 100
+    Send {tab}
+    Send ^a^c
+
+    Sleep 200
+    Old := clipboard
+
+    if (Old == Ny){
+        MsgBox Ens
+
+    }else{
+        MsgBox %Old% = %Ny%
+        Send % Ny
+
+        Sleep 200
+        Send {tab}^{END}
+
+        sleep 1000
+        Click 416, 1074
+
+        Sleep 1000
+    }
+
+
+    Return
+
+    send ^{Numpad9}
 Return
 
 
