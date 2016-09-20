@@ -1,5 +1,4 @@
-^Esc::ExitApp  ;Escape key will exit... place this at the bottom of the script
-!x::Suspend
+!z::Suspend
 
 ENTER::
     WinGetTitle, title, A
