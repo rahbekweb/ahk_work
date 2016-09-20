@@ -146,6 +146,14 @@ Return
 
 ;////////////////////- F-taster -////////////////////
 
+$F1::
+	if(web_save()){
+		MsgBox done
+		Return
+	}
+	Send {F1}
+Return
+
 
 
 
@@ -173,9 +181,20 @@ return
 
 $^e::
 	if(illustrator_exportPdf()){
-		return
+		Return
 	}
 	Send ^e
+Return
+
+$^+r::
+	;// sørg for ikke at resette billederne i lightroom
+	if (WinActive("ahk_exe lightroom.exe")){
+		Send ^+e
+		Return
+	;// END - sørg for ikke at resette billederne i lightroom
+	}else{
+		Send ^+r
+	}
 Return
 
 ^0:: tmc()
@@ -560,6 +579,13 @@ vpn(){
 		}
 		Send !{F4}
 	}
+}
+
+web_save(){
+	MsgBox, 4, , hvad vil du
+		IfMsgBox, No
+			Return
+	Return true
 }
 
 
