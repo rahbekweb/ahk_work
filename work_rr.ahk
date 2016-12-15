@@ -177,6 +177,7 @@ Return
 $^s::
 	Send ^s
 	reloadAHK()
+	tmc_searche()
 return
 
 $^e::
@@ -261,7 +262,9 @@ return
 ;////////////////////- ALT -////////////////////
 
 $!F4::
-	teamviewer_close()
+	if(teamviewer_close()){
+		return
+	}
 	Send !{f4}
 Return
 
@@ -450,6 +453,10 @@ teamviewer(){
 	IfWinExist TeamViewer
 	{
 		WinActivate, Computere og kontakter
+		Sleep 200
+		Click 153, 93
+		Sleep 200
+		Send ^a
 	}
 	Else
 	{
@@ -500,10 +507,15 @@ teamviewer_shiftuser(){
 	}
 }
 teamviewer_close(){
-	IfWinActive Computere og kontakter
+	if(WinActive("ahk_exe TeamViewer.exe"))
 	{
 		WinActivate, TeamViewer
+		Sleep 200
+		click 46,46
+		click 46,155
+		return true
 	}
+	return false
 }
 
 tmc(){
@@ -532,6 +544,13 @@ tmc(){
 	}
 	Sleep 200
 	Send {tab}
+}
+
+tmc_searche(){
+	IfWinActive Total Commander
+	{
+		Send ^a
+	}
 }
 
 unoSoft(){
