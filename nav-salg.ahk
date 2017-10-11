@@ -68,9 +68,9 @@ $^q:: QStregkodeRetail()
 ;return
 
 
-^e::
-	errorSMS("test")
-return
+;^e::
+;	errorSMS("test")
+;return
 
 
 ;////////////////////- SHIFT -////////////////////
@@ -86,10 +86,10 @@ $ENTER::
 	IfWinActive Rediger - Søg stregkode
 	{
 		Send {TAB}
+	}else{
+
 	}
 	Send {Enter}
-	Sleep 1000
-	Send, ^d
 Return
 
 
