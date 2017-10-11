@@ -70,6 +70,10 @@ Return
 	kommentarAfsnitEnd()
 Return
 
+::jq::
+	Send query{SPACE}
+return
+
 :*:10.::
 	Send 10.45.0.
 Return

@@ -11,6 +11,8 @@ $ENTER::
 		Send {TAB}
 	}
 	Send {Enter}
+	Sleep 1000
+	Send, ^d
 Return
 
 
@@ -45,6 +47,8 @@ Return
 
 $^q:: QStregkodeRetail()
 
+$^d:: DoPlaceringsindhold()
+
 
 QStregkodeRetail(){
 	if(IsNAV())
@@ -73,6 +77,21 @@ DoQStregkodeRetail(){
 	Send ^a{delete}{Enter}
 	Sleep 200
 	Send {Control Down}{Shift Down}f{Shift Up}{Control Up}
+}
+
+DoPlaceringsindhold(){
+	if(IsNAV())
+	{
+		IfWinActive Retail varer - Microsoft Dynamics NAV
+		{
+			sleep 100
+			Send {alt}
+			sleep 100
+			send s
+			sleep 100
+			send n
+		}
+	}
 }
 
 

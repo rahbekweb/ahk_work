@@ -1,6 +1,6 @@
 ;////////////////////- RET HER -////////////////////
 
-ipadresserKundeservice := Array("110","111","112")
+ipadresserKundeservice := Array("31","32","33","34")
 
 ;////////////////////- END - RET HER -////////////////////
 
@@ -10,11 +10,11 @@ ipadresserKundeservice := Array("110","111","112")
 
 ;////////////////////- fælles variabler -////////////////////
 myIp := StrReplace(A_IPAddress1,"10.45.0.")
-_f3felt := "WindowsForms10.EDIT.app.0.245fb7_r13_ad11"
-_feltMedOrdrenr	:= "WindowsForms10.EDIT.app.0.2aeb54d_r13_ad11"
-_feltMedDato	:= "WindowsForms10.EDIT.app.0.2aeb54d_r13_ad111"
-_feltMedLeveringsnavn	:= "WindowsForms10.EDIT.app.0.2aeb54d_r13_ad145"
-_feltMedForsendelsmetode:= "WindowsForms10.EDIT.app.0.2aeb54d_r13_ad162"
+_f3felt := "WindowsForms10.EDIT.app.0.265601d_r9_ad11"
+_feltMedOrdrenr	:= "WindowsForms10.EDIT.app.0.265601d_r9_ad11"
+_feltMedDato	:= "WindowsForms10.EDIT.app.0.265601d_r9_ad116"
+_feltMedLeveringsnavn	:= "WindowsForms10.EDIT.app.0.265601d_r9_ad145"
+_feltMedForsendelsmetode:= "WindowsForms10.EDIT.app.0.265601d_r9_ad162"
 
 ;////////////////////- END - fælles variabler -////////////////////
 
@@ -40,32 +40,32 @@ $^q:: QStregkodeRetail()
 
 
 ;opdater bogførings dato
-$^d::
-	global _feltMedOrdrenr
-	salgsordre_rediger_Borgoeringsdato()
+;$^d::
+;	global _feltMedOrdrenr
+;	salgsordre_rediger_Borgoeringsdato()
+;
+;	forsendelstype()
+;
+;	ControlFocus, _feltMedOrdrenr, A
+;Return
 
-	forsendelstype()
-
-	ControlFocus, _feltMedOrdrenr, A
-Return
 
 
-
-^g::
-	if(forsendelstype_droppoint()){
-		Return
-	}
-
-	Return
-		ClipSaved := ClipboardAll ; Save the entire clipboard to a variable of your choice.
-		ControlFocus, WindowsForms10.Window.8.app.0.2aeb54d_r13_ad131, A
-		Send ^a
-		Send {Control Down}{Shift Down}c{Shift Up}{Control Up}
-		ClipWait  ; Wait for the clipboard to contain text.
-		MsgBox Control-C copied the following contents to the clipboard:`n`n%clipboard%
-		Clipboard := ClipSaved   ; Restore the original clipboard. Note the use of Clipboard (not ClipboardAll).
-		ClipSaved =   ; Free the memory in case the clipboard was very large.
-return
+;^g::
+;	if(forsendelstype_droppoint()){
+;		Return
+;	}
+;
+;	Return
+;		ClipSaved := ClipboardAll ; Save the entire clipboard to a variable of your choice.
+;		ControlFocus, WindowsForms10.Window.8.app.0.2aeb54d_r13_ad131, A
+;		Send ^a
+;		Send {Control Down}{Shift Down}c{Shift Up}{Control Up}
+;		ClipWait  ; Wait for the clipboard to contain text.
+;		MsgBox Control-C copied the following contents to the clipboard:`n`n%clipboard%
+;		Clipboard := ClipSaved   ; Restore the original clipboard. Note the use of Clipboard (not ClipboardAll).
+;		ClipSaved =   ; Free the memory in case the clipboard was very large.
+;return
 
 
 ^e::
@@ -81,8 +81,16 @@ return
 
 
 
-
-
+;////////////////////- ENTER -////////////////////
+$ENTER::
+	IfWinActive Rediger - Søg stregkode
+	{
+		Send {TAB}
+	}
+	Send {Enter}
+	Sleep 1000
+	Send, ^d
+Return
 
 
 
@@ -134,6 +142,9 @@ salgsordre_openFirst(){
 			Sleep 500
 			Click 259,259
 			Send {Enter}
+
+			Sleep 3000
+			salgsordre_rediger_Borgoeringsdato()
 			return
 		}
 	}
@@ -160,7 +171,15 @@ salgsordre_rediger_Borgoeringsdato(){
 					Return
 			}
 
+			ControlFocus, %_feltMedDato%, A ;forsøg at flyt focus til dato felt
+
+			ControlGetFocus, HvilketFelt, A ;hent hvilket felt der er i focus
+
+			if(HvilketFelt=_feltMedDato){ ;hvis det er det rigtige felt så gør noget
+
 			Send ^ad{Enter} ;opdater Dato
+			
+			}
 		}else{
 			errorSMS("fand ikke Bogføringsfato feltet i salgsordrer #1")
 			MsgBox fand ikke Bogføringsfato feltet			
