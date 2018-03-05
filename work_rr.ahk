@@ -84,6 +84,13 @@ Return
 	Send 192.168.
 Return
 
+:*:ssp::
+	Send spejdersport
+Return
+::adm::
+	Send administrator
+Return
+
 	;////////////////////- IpButikker -////////////////////
 
 	::ip1::
@@ -202,7 +209,7 @@ $^+r::
 	}
 Return
 
-^0:: tmc()
+^+0:: tmc()
 
 ^<#t:: teamviewer()
 
@@ -282,17 +289,7 @@ Return
 ;////////////////////- Win -////////////////////
 
 
-<#t:: Run, mstsc.exe
-
-<#v:: vpn()
-
-<#n::
-	if(notepadD := WinExist("ahk_exe notepad.exe")){
-		WinActivate, ahk_id %notepadD%
-	}else{
-		Run, notepad.exe
-	}
-Return
+<#b:: adobebridge()
 
 <#c::
 	if(calcD := WinExist("Lommeregner")){
@@ -302,15 +299,27 @@ Return
 	}
 Return
 
-<#u:: unoSoft()
-
-<#w:: googleChromeINK()
-
 <#k:: kontrolpanel()
+
+<#n::
+	if(notepadD := WinExist("ahk_exe notepad.exe")){
+		WinActivate, ahk_id %notepadD%
+	}else{
+		Run, notepad.exe
+	}
+Return
 
 <#o:: outlook()
 
-<#b:: adobebridge()
+<#u:: unoSoft()
+
+<#s:: Run, "C:\Program Files (x86)\Sublime Text 3\sublime_text.exe"
+
+<#t:: Run, mstsc.exe
+
+<#v:: vpn()
+
+<#w:: googleChromeINK()
 
 
 
@@ -502,11 +511,16 @@ teamviewer_shiftuser(){
 			}else{
 				Send rahbekweb
 			}
-			tab(1)
-		}else{
-			tab(2)
 		}
-		Send @Fjernstyr4you@{enter}
+
+		WinActivate, Computere og kontakter
+		IfWinActive Computere og kontakter
+		{
+			ControlFocus , Edit2, Computere og kontakter
+			Send ^a
+			Send @Fjernstyr4you@{enter}
+		}
+
 		Return
 	}
 }
@@ -600,7 +614,18 @@ vpn(){
 			break
 			Sleep 250
 		}
-		Send !{F4}
+
+		MsgBox, 4, , Disconnect VPN?
+			IfMsgBox, No
+			{
+				WinActivate, Cisco AnyConnect Secure Mobility Client
+				WinClose, Cisco AnyConnect Secure Mobility Client
+				Return
+			}
+
+		ControlClick, Disconnect, Cisco AnyConnect Secure Mobility Client
+		Sleep 250
+		WinClose, Cisco AnyConnect Secure Mobility Client
 	}
 }
 
