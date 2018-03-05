@@ -12,9 +12,12 @@ ipadresserKundeservice := Array("31","32","33","34")
 myIp := StrReplace(A_IPAddress1,"10.45.0.")
 _f3felt := "WindowsForms10.EDIT.app.0.265601d_r9_ad11"
 _feltMedOrdrenr	:= "WindowsForms10.EDIT.app.0.265601d_r9_ad11"
-_feltMedDato	:= "WindowsForms10.EDIT.app.0.265601d_r9_ad116"
+_feltMedDatoAll	:= "WindowsForms10.EDIT.app.0.265601d_r9_ad116"
+_feltMedDatoLes	:= "WindowsForms10.EDIT.app.0.265601d_r9_ad111"
+_feltMedVismere	:= "WindowsForms10.STATIC.app.0.265601d_r9_ad12"
 _feltMedLeveringsnavn	:= "WindowsForms10.EDIT.app.0.265601d_r9_ad145"
 _feltMedForsendelsmetode:= "WindowsForms10.EDIT.app.0.265601d_r9_ad162"
+_running := 0
 
 ;////////////////////- END - fælles variabler -////////////////////
 
@@ -31,7 +34,7 @@ F1::return
 
 $NumpadSub:: salgsordre_seach()
 
-$NumpadAdd:: salgsordre_openFirst()
+$NumpadAdd::salgsordre_openFirst()
 
 
 ;////////////////////- Ctrl -////////////////////
@@ -40,14 +43,11 @@ $^q:: QStregkodeRetail()
 
 
 ;opdater bogførings dato
-;$^d::
-;	global _feltMedOrdrenr
-;	salgsordre_rediger_Borgoeringsdato()
-;
-;	forsendelstype()
-;
-;	ControlFocus, _feltMedOrdrenr, A
-;Return
+$^d::
+	salgsordre_rediger_Borgoeringsdato()
+
+	forsendelstype()
+Return
 
 
 
@@ -93,7 +93,10 @@ $ENTER::
 Return
 
 
-
+$ESCAPE::
+	_running = 0
+	Send {Escape}
+Return
 
 
 
@@ -132,19 +135,34 @@ salgsordre_seach(){
 }
 
 salgsordre_openFirst(){
-	global _f3felt 
+	global _f3felt, _running
+
 	IfWinActive Salgsordrer - Microsoft Dynamics NAV
 	{
 		ControlGetFocus, HvilketFelt
-		
+
 		if(HvilketFelt=_f3felt){
 			Send {Enter}
 			Sleep 500
-			Click 259,259
+			Click 259,265
+			Sleep 200
 			Send {Enter}
 
-			Sleep 3000
-			salgsordre_rediger_Borgoeringsdato()
+			_running = 1
+
+			Sleep 1500
+
+			loop, 5{
+				if(_running){
+					Sleep 500
+					if(checkTitle("^Rediger - Salgsordre")){
+						salgsordre_rediger_Borgoeringsdato()
+						Break
+					}
+				}else{
+					Break
+				}
+			}
 			return
 		}
 	}
@@ -152,9 +170,16 @@ salgsordre_openFirst(){
 }
 
 salgsordre_rediger_Borgoeringsdato(){
-	global _feltMedOrdrenr, _feltMedDato
+	global _feltMedOrdrenr, _feltMedDatoAll, _feltMedDatoLes, _feltMedVismere
 
 	if(checkTitle("^Rediger - Salgsordre")){
+
+		ControlGetText, feltMedVismereVar, %_feltMedVismere%, a
+		if(feltMedVismereVar=="Vis flere felter")
+			_feltMedDato = %_feltMedDatoLes%
+		else
+			_feltMedDato = %_feltMedDatoAll%
+
 		ControlFocus, %_feltMedDato%, A ;forsøg at flyt focus til dato felt
 
 		ControlGetFocus, HvilketFelt, A ;hent hvilket felt der er i focus
@@ -181,7 +206,6 @@ salgsordre_rediger_Borgoeringsdato(){
 			
 			}
 		}else{
-			errorSMS("fand ikke Bogføringsfato feltet i salgsordrer #1")
 			MsgBox fand ikke Bogføringsfato feltet			
 		}
 	}else{
@@ -330,6 +354,7 @@ _FindFeld(){
 }
 
 errorSMS(messege){
+	Return
 	MsgBox, 4, , %A_ComputerName% Send SMS?
 		IfMsgBox, No
 			Return 
