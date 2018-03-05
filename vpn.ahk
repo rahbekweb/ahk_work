@@ -17,7 +17,18 @@ vpn(){
 			break
 			Sleep 250
 		}
-		Send !{F4}
+
+		MsgBox, 4, , Disconnect VPN?
+			IfMsgBox, No
+			{
+				WinActivate, Cisco AnyConnect Secure Mobility Client
+				WinClose, Cisco AnyConnect Secure Mobility Client
+				Return
+			}
+
+		ControlClick, Disconnect, Cisco AnyConnect Secure Mobility Client
+		Sleep 250
+		WinClose, Cisco AnyConnect Secure Mobility Client
 	}
 }
 
