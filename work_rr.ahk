@@ -155,6 +155,72 @@ Return
 	Return
 
 
+	;////////////////////- Gruppenavne -////////////////////
+
+	:*:g1g::
+		Send 1. Birkerød
+	Return
+
+	:*:g2g::
+		Send 1. Lillerød
+	Return
+
+	:*:g3g::
+		Send 2. Birkerød
+	Return
+
+	:*:g4g::
+		Send Birkegruppen
+	Return
+
+	:*:g5g::
+		Send Blackfoot
+	Return
+
+	:*:g6g::
+		Send Brødeskov
+	Return
+
+	:*:g7g::
+		Send Claus Nar
+	Return
+
+	:*:g8g::
+		Send Palnatoke
+	Return
+
+	:*:g9g::
+		Send Peter Lassen
+	Return
+
+	:*:g10g::
+		Send Skjoldmøerne
+	Return
+
+	:*:g11g::
+		Send Stavnsholt Vikingerne
+	Return
+
+	:*:g0g::
+		Send Ravnsholt Division
+	Return
+
+	:*:glist::
+		Send 1. Birkerød`r
+		Send 1. Lillerød`r
+		Send 2. Birkerød`r
+		Send Birkegruppen`r 
+		Send Blackfoot`r
+		Send Brødeskov`r
+		Send Claus Nar`r
+		Send Palnatoke`r
+		Send Peter Lassen`r
+		Send Skjoldmøerne`r
+		Send Stavnsholt Vikingerne`r
+		Send Ravnsholt Division
+	Return
+
+
 ;////////////////////- F-taster -////////////////////
 
 $F1::
@@ -199,11 +265,11 @@ $^e::
 Return
 
 $^+r::
-	;// sÃ¸rg for ikke at resette billederne i lightroom
+	;// sørg for ikke at resette billederne i lightroom
 	if (WinActive("ahk_exe lightroom.exe")){
 		Send ^+e
 		Return
-	;// END - sÃ¸rg for ikke at resette billederne i lightroom
+	;// END - sørg for ikke at resette billederne i lightroom
 	}else{
 		Send ^+r
 	}
@@ -463,7 +529,7 @@ reloadAHK(){
 }
 
 teamviewer(){
-	IfWinExist TeamViewer
+	if(WinActive("ahk_exe TeamViewer.exe"))
 	{
 		WinActivate, Computere og kontakter
 		Sleep 200
@@ -473,11 +539,11 @@ teamviewer(){
 	}
 	Else
 	{
-		MsgBox, 4, , Ã…ben Teamviewer?
+		MsgBox, 4, , Åben Teamviewer?
 			IfMsgBox, No
 				return
 		run, C:\Program Files (x86)\TeamViewer\TeamViewer.exe
-		Sleep 1000
+		Sleep 3000
 
 		WinActivate, Computere og kontakter
 		Click 20,36
@@ -486,42 +552,47 @@ teamviewer(){
 	}
 }
 teamviewer_shiftuser(){
-	IfWinActive TeamViewer
-	{
-		WinActivate, Computere og kontakter ; focus pÃ¥ login menu og gÃ¥ videre
-	}
-	IfWinActive Computere og kontakter
-	{
-		; login eller skift bruger
-		Click 20,40 ;click i hjÃ¸rne
-		Sleep 100
-		WinGetText, OutputVar, A ; hent synlig tekst
-		out := RegExMatch(OutputVar, "E-mail") ; se om der stÃ¥r email noget sted
-		if(out=0){ ; hvis der ikke stÃ¥r Email noget sted (vi er logget ind)
-			Sleep 100
-			Click 20,272 ;log ud
-			Sleep 200
-			WinGetText, OutputVar, A ;hent synlig tekst for at kunne finde ud af hvilken bruger der var logget ind
-			c := StrSplit(OutputVar, "`n") ;slit i linjer
-			c:= RegExReplace(c[2], "\r","") ;fjern linjeskift
-			Click 20,36
-			tab(1) ;hop til email felt
-			if(c="rahbekweb"){
-				Send webmaster@spejdersport.dk
-			}else{
-				Send rahbekweb
-			}
+	if(WinActive("ahk_exe TeamViewer.exe")){
+		IfWinActive TeamViewer
+		{
+			WinActivate, Computere og kontakter ; focus på login menu og gå videre
 		}
-
-		WinActivate, Computere og kontakter
 		IfWinActive Computere og kontakter
 		{
-			ControlFocus , Edit2, Computere og kontakter
-			Send ^a
-			Send @Fjernstyr4you@{enter}
-		}
+			; login eller skift bruger
+			Click 20,40 ;click i hjørne
+			Sleep 100
+			WinGetText, OutputVar, A ; hent synlig tekst
+			out := RegExMatch(OutputVar, "E-mail") ; se om der står email noget sted
+			if(out=0){ ; hvis der ikke står Email noget sted (vi er logget ind)
+				Sleep 100
+				Click 20,272 ;log ud
+				Sleep 200
+				WinGetText, OutputVar, A ;hent synlig tekst for at kunne finde ud af hvilken bruger der var logget ind
+				c := StrSplit(OutputVar, "`n") ;slit i linjer
+				c:= RegExReplace(c[2], "\r","") ;fjern linjeskift
+				Click 20,36
 
-		Return
+				Click 45, 200
+				if(c="rahbekweb"){
+					Send ^a
+					Send webmaster@spejdersport.dk
+				}else{
+					Send ^a
+					Send rahbekweb
+				}
+			}
+
+			WinActivate, Computere og kontakter
+			IfWinActive Computere og kontakter
+			{
+				ControlFocus , Edit2, Computere og kontakter
+				Send ^a
+				Send @Fjernstyr4you@{enter}
+			}
+
+			Return
+		}
 	}
 }
 teamviewer_close(){
@@ -604,8 +675,8 @@ vpn(){
 	Run C:\Program Files (x86)\Cisco\Cisco AnyConnect Secure Mobility Client\vpnui.exe
 	Sleep %sl%
 	WinGetText, OutputVar, A ; hent synlig tekst
-	out := RegExMatch(OutputVar, "Disconnect") ; se om der stÃ¥r Disconnect noget sted
-	if(out=0){ ;hvis der ikke stÃ¥r Disconnect sÃ¥ skal vi ligge ind
+	out := RegExMatch(OutputVar, "Disconnect") ; se om der står Disconnect noget sted
+	if(out=0){ ;hvis der ikke står Disconnect så skal vi ligge ind
 		tab(1)
 		Send vpn.spejdersport.dk{enter}
 	}else{
@@ -639,7 +710,7 @@ web_save(){
 
 
 
-;/////////////////////- Functioner til fÃ¦llesbrug -////////////////////
+;/////////////////////- Functioner til fællesbrug -////////////////////
 
 checkTitle(reg){
 	WinGetTitle, title, A
