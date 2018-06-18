@@ -255,7 +255,11 @@ $^s::
 	Send ^s
 	reloadAHK()
 	tmc_searche()
-return
+Return
+
+$^+v::
+	pasteWhitOutFormating()
+Return
 
 $^e::
 	if(illustrator_exportPdf()){
@@ -508,6 +512,12 @@ outlook(){
 		Return
 	}
 	run outlook.exe
+}
+
+pasteWhitOutFormating(){
+	c = %clipboard%
+	Trim(c)
+	Send, %c%
 }
 
 reloadAHK(){
