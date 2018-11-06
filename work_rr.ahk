@@ -155,7 +155,123 @@ Return
 	Return
 
 
-	;////////////////////- Gruppenavne -////////////////////
+	;////////////////////- butikker -////////////////////
+
+	:*:b1b::
+		Send 01 KBH - Nørre Firmagsgade
+	Return
+
+	:*:b2b::
+		Send 02 Lyngby
+	Return
+
+	:*:b3b::
+		Send 03 Odense
+	Return
+
+	:*:b4b::
+		Send 04 Aarhus
+	Return
+
+	:*:b5b::
+		Send 05 Aalborg
+	Return
+
+	:*:b6b::
+		Send 06 Taastrup City2
+	Return
+
+	:*:b7b::
+		Send 07 Webshoppen
+	Return
+
+	:*:b8b::
+		Send 08 Kolding
+	Return
+
+	:*:b9b::
+		Send 09 Næstved
+	Return
+
+	:*:b10b::
+		Send 10 Roskilde Festival
+	Return
+
+	:*:b11b::
+		Send 11 Herning
+	Return
+
+	:*:b12b::
+		Send 12 FRB - Frederiksborggade
+	Return
+
+	:*:b14b::
+		Send 14 Hillerød
+	Return
+
+	:*:b15b::
+		Send 15 Roskilde
+	Return
+
+	:*:b16b::
+		Send 16 Rødovre
+	Return
+
+	:*:b17b::
+		Send 17 Vejle
+	Return
+
+	:*:b18b::
+		Send 18 Østerport
+	Return
+
+	:*:b19b::
+		Send 19 Esbjerg
+	Return
+
+	:*:b20b::
+		Send 20 Amager
+	Return
+
+	:*:b21b::
+		Send 21 Rosengaardscenteret
+	Return
+
+	:*:b22b::
+		Send 22 Horsens
+	Return
+
+	:*:b23b::
+		Send 23 Viborg
+	Return
+
+	:*:blist::
+		Send 01 KBH - Nørre Firmagsgade`r
+		Send 02 Lyngby`r
+		Send 03 Odense`r
+		Send 04 Aarhus`r
+		Send 05 Aalborg`r
+		Send 06 Taastrup City2`r
+		Send 07 Webshoppen`r
+		Send 08 Kolding`r
+		Send 09 Næstved`r
+		Send 10 Roskilde Festival`r
+		Send 11 Herning`r
+		Send 12 FRB - Frederiksborggade`r
+		Send 14 Hillerød`r
+		Send 15 Roskilde`r
+		Send 16 Rødovre`r
+		Send 17 Vejle`r
+		Send 18 Østerport`r
+		Send 19 Esbjerg`r
+		Send 20 Amager`r
+		Send 21 Rosengaardscenteret`r
+		Send 22 Horsens`r
+		Send 23 Viborg`r
+	Return
+
+
+;////////////////////- Gruppenavne -////////////////////
 
 	:*:g1g::
 		Send 1. Birkerød
@@ -238,14 +354,6 @@ Return
 
 NumLock::
 	SetNumlockState, on ;set numlock on
-	unoSoft_num()
-Return
-
-$NumpadSub::
-	if(unoSoft_numHas()){
-		Return
-	}
-	Send {NumpadSub}
 Return
 
 
@@ -319,7 +427,6 @@ Return
 
 $^1:: 
 	teamviewer_shiftuser()
-	unoSoft_num()
 	cmd_ping()
 Return
 
@@ -381,7 +488,7 @@ Return
 
 <#o:: outlook()
 
-<#u:: unoSoft()
+<#u:: ipNordic()
 
 <#s:: Run, "C:\Program Files (x86)\Sublime Text 3\sublime_text.exe"
 
@@ -541,11 +648,6 @@ reloadAHK(){
 teamviewer(){
 	if(WinActive("ahk_exe TeamViewer.exe"))
 	{
-		WinActivate, Computere og kontakter
-		Sleep 200
-		Click 153, 93
-		Sleep 200
-		Send ^a
 	}
 	Else
 	{
@@ -553,12 +655,6 @@ teamviewer(){
 			IfMsgBox, No
 				return
 		run, C:\Program Files (x86)\TeamViewer\TeamViewer.exe
-		Sleep 3000
-
-		WinActivate, Computere og kontakter
-		Click 20,36
-		tab(2)
-		Send @Fjernstyr4you@{enter}
 	}
 }
 teamviewer_shiftuser(){
@@ -652,30 +748,13 @@ tmc_searche(){
 	}
 }
 
-unoSoft(){
-	Run C:\Program Files (x86)\Uno Telefoni\Uno Soft\SoftPhone.exe
-}
-
-unoSoft_num(){
-	IfWinActive Uno Soft
+ipNordic(){
+	if(WinExist("ahk_exe Communicator.exe"))
 	{
-		if(WinExist("Tastatur") && WinExist("ahk_exe SoftPhone.exe"))
-		{
-			WinActivate, Tastatur
-		}else{
-			ControlClick, Button6
-		}
+		WinActivate, ahk_exe Communicator.exe
+		Return
 	}
-	if (WinActive("Tastatur") && WinActive("ahk_exe SoftPhone.exe")){
-		Send !{F4}
-	}
-}
-unoSoft_numHas(){
-	if (WinActive("Tastatur") && WinActive("ahk_exe SoftPhone.exe")){
-		Send +3
-		Return true
-	}
-	Return false
+	Run C:\Users\rr\Desktop\ipnordic Communicator.appref-ms
 }
 
 vpn(){
