@@ -1,3 +1,22 @@
++^PgUp::
+	Suspend
+	if (A_IsSuspended)
+		MsgBox, Fast Scrolling have been suspended
+	else
+		MsgBox, 0x1030, Alert!, Fast Scrolling are now active!
+return
+
+;////////////////////- suspend i bestemte programmer -////////////////////
+
+suspendInPrograms := []
+;array med alle de class eller endnu bedre exe programmer der ikke skal være super scrolling på.
+
+;hvis man trykker altGR +^PgUp skal der komme et if MsgBox der spørger om det aktuelle program skal suspendes fra supper scrolling i denne sesion.
+
+;hvis man trupper igen skal man kunne aktivere super scrolling igen på det enkelte program i denne sesion
+;////////////////////- END - suspend i bestemte programmer -////////////////////
+
+
 ; Accelerated Scrolling
 ; V1.3
 ; By BoffinbraiN
@@ -44,6 +63,9 @@ WheelDown::  Goto Scroll
 
 
 Scroll:
+	;WinGetClass, class, A
+	;MsgBox, The active window's class is "%class%".
+
 	t := A_TimeSincePriorHotkey
 	if (A_PriorHotkey = A_ThisHotkey && t < timeout)
 	{
