@@ -77,9 +77,6 @@ return
 :*:10.::
 	Send 10.45.0.
 Return
-:*:10,,::
-	Send 10.45.0.
-Return
 :*:192::
 	Send 192.168.
 Return
@@ -93,6 +90,9 @@ Return
 
 	;////////////////////- IpButikker -////////////////////
 
+	::ipb::
+		Send 10.45.1
+	Return
 	::ip1::
 		Send 10.45.1.
 	Return
@@ -115,16 +115,13 @@ Return
 		Send 192.168.110.
 	Return
 	::ip9::
-		Send 192.168.103.
-	Return
-	::ip10::
-		Send 192.168.102.
+		Send 10.45.109
 	Return
 	::ip11::
 		Send 192.168.100.
 	Return
 	::ip12::
-		Send 192.168.102.
+		Send 10.45.112.
 	Return
 	::ip14::
 		Send 192.168.111.
@@ -151,7 +148,10 @@ Return
 		Send 192.168.118.
 	Return
 	::ip22::
-		Send 192.168.119.
+		Send 10.45.122.
+	Return
+	::ip23::
+		Send 10.45.123.
 	Return
 
 
@@ -274,50 +274,62 @@ Return
 ;////////////////////- Gruppenavne -////////////////////
 
 	:*:g1g::
+	:*:1bg::
 		Send 1. Birkerød
 	Return
 
 	:*:g2g::
+	:*:1lg::
 		Send 1. Lillerød
 	Return
 
 	:*:g3g::
+	:*:2bg::
 		Send 2. Birkerød
 	Return
 
 	:*:g4g::
+	:*:big::
 		Send Birkegruppen
 	Return
 
 	:*:g5g::
+	:*:bfg::
 		Send Blackfoot
 	Return
 
 	:*:g6g::
+	:*:bsg::
 		Send Brødeskov
 	Return
 
 	:*:g7g::
+	:*:cng::
 		Send Claus Nar
 	Return
 
 	:*:g8g::
+	:*:pag::
 		Send Palnatoke
 	Return
 
 	:*:g9g::
+	:*:plg::
 		Send Peter Lassen
 	Return
 
 	:*:g10g::
+	:*:smg::
 		Send Skjoldmøerne
 	Return
 
 	:*:g11g::
+	:*:svg::
 		Send Stavnsholt Vikingerne
 	Return
 
 	:*:g0g::
+	:*:rdg::
 		Send Ravnsholt Division
 	Return
 
@@ -395,6 +407,9 @@ Return
 
 ^<#r:: run cmd.exe
 
+
+^<#s:: openProgram("C:\Users\rr\AppData\Local\SourceTree\SourceTree.exe")
+
 ^<#d::
 	if !(docD := WinExist("Dokumenter")){
 		run, %userprofile%\documents
@@ -422,8 +437,13 @@ Return
 	}
 Return
 
+^<#l:: lightroom()
+^<#b:: lightroom()
+
 ^<#n:: Run, notepad.exe
 ^<#c:: Run, calc.exe
+
+^<#w:: Run, "C:\Program Files\AutoHotkey\AU3_Spy.exe"
 
 $^1:: 
 	teamviewer_shiftuser()
@@ -504,12 +524,7 @@ Return
 
 
 adobebridge(){
-	if(WinExist("ahk_exe Bridge.exe"))
-	{
-		WinActivate, ahk_exe Bridge.exe
-		Return
-	}
-	run Bridge.exe
+	openProgram("Bridge.exe")
 	Sleep 5000
 	WinActivate, ahk_exe Bridge.exe
 }
@@ -612,13 +627,12 @@ kontrolpanel_printer(){
 	Run, control printers
 }
 
+lightroom(){
+	openProgram("C:\Program Files\Adobe\Adobe Lightroom Classic CC\Lightroom.exe")
+}
+
 outlook(){
-	if(WinExist("ahk_exe outlook.exe"))
-	{
-		WinActivate, ahk_exe outlook.exe
-		Return
-	}
-	run outlook.exe
+	openProgram("outlook.exe")
 }
 
 pasteWhitOutFormating(){
@@ -646,16 +660,7 @@ reloadAHK(){
 }
 
 teamviewer(){
-	if(WinActive("ahk_exe TeamViewer.exe"))
-	{
-	}
-	Else
-	{
-		MsgBox, 4, , Åben Teamviewer?
-			IfMsgBox, No
-				return
-		run, C:\Program Files (x86)\TeamViewer\TeamViewer.exe
-	}
+	openProgram("C:\Program Files (x86)\TeamViewer\TeamViewer.exe")
 }
 teamviewer_shiftuser(){
 	if(WinActive("ahk_exe TeamViewer.exe")){
@@ -811,6 +816,25 @@ checkTitle(reg){
 	return False
 }
 
+openProgram(Path){
+	RegExMatch(Path, "[A-Za-z0-9-_]*\.[a-z]*",FoundPath)
+	if(WinExist("ahk_exe "+ FoundPath))
+	{
+		WinActivate, ahk_exe %FoundPath%
+		Return
+	}
+	Run, %Path%
+
+	SplashTextOn, , , Open %FoundPath%
+	Sleep, 2000
+	SplashTextOff
+}
+
+processExist(Name){
+	Process,Exist,%Name%
+	return Errorlevel
+}
+
 SendMore(hvad,antal){
 	loop, %antal%{
     	Send %hvad%
@@ -821,9 +845,4 @@ tab(antal){
     loop, %antal%{
     	Send {TAB}
     }
-}
-
-ProcessExist(Name){
-	Process,Exist,%Name%
-	return Errorlevel
 }
