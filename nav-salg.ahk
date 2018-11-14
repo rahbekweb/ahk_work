@@ -5,7 +5,7 @@ ipadresserKundeservice := Array("31","32","33","34")
 ;////////////////////- END - RET HER -////////////////////
 
 
-
+;////////////////////- https://www.nsi-be.com/products/numpad-and-function-keyboard-desktop -////////////////////
 
 
 ;////////////////////- fælles variabler -////////////////////
@@ -28,13 +28,25 @@ _running := 0
 
 F1::return
 
+$F3::
+	if(IsNAV() && checkTitle("Microsoft Dynamics NAV")){
+		Click 281,223
+		Sleep 200
+		Send {F3}
+	}else{
+		Send {F3}
+	}
+Return
+
 
 
 ;////////////////////- NUMPAD -////////////////////
 
 $NumpadSub:: salgsordre_seach()
 
-$NumpadAdd::salgsordre_openFirst()
+$NumpadAdd:: salgsordre_openFirst()
+
+$^NumpadMult:: HT_find_salgsordre()
 
 
 ;////////////////////- Ctrl -////////////////////
@@ -44,9 +56,12 @@ $^q:: QStregkodeRetail()
 
 ;opdater bogførings dato
 $^d::
-	salgsordre_rediger_Borgoeringsdato()
+	if(IsNAV){
+		salgsordre_rediger_Borgoeringsdato()
+		Return
+	}
 
-	forsendelstype()
+	Send ^d
 Return
 
 
@@ -68,11 +83,6 @@ Return
 ;return
 
 
-;^e::
-;	errorSMS("test")
-;return
-
-
 ;////////////////////- SHIFT -////////////////////
 
 
@@ -83,13 +93,13 @@ Return
 
 ;////////////////////- ENTER -////////////////////
 $ENTER::
-	IfWinActive Rediger - Søg stregkode
-	{
-		Send {TAB}
-	}else{
-
-	}
+	enterFunctions()
 	Send {Enter}
+Return
+
+$NumpadEnter::
+	enterFunctions()
+	Send {NumpadEnter}
 Return
 
 
@@ -118,9 +128,42 @@ Return
 
 ;////////////////////- Functioner til genveje -////////////////////
 
+enterFunctions(){
+	IfWinActive Rediger - Søg stregkode
+	{
+		Send {TAB}
+	}
+}
+
+HT_find_salgsordre(){
+	if(IsNAV()){
+		Send ^{F3}
+		Sleep 200
+		Send ^a
+		Sleep 200
+		Send find salgsordre
+		Sleep 200
+		Send {Enter}{Enter}
+		Sleep 300
+
+		Loop, 5{
+			if(checkTitle("^Rediger - Find webbestillinger")){
+				Click 173, 205
+				break
+			}
+			Sleep 250
+		}
+		MouseMove 300,400
+	}else{
+		Send {NumpadMult}
+	}
+}
+
 salgsordre_seach(){
 	IfWinActive Salgsordrer - Microsoft Dynamics NAV
-    {
+	{
+		Click 281,223
+		Sleep 200
 		Send {F3}
 		Sleep 200
 		if(IsKundeservice()){
@@ -301,7 +344,7 @@ IsKundeservice(){
 }
 
 IsNAV(){
-	if(checkTitle("Microsoft.*NAV")){
+	if(WinActive("ahk_exe Microsoft.Dynamics.Nav.Client.exe")){
 		return true
 	}
 	return false
@@ -311,16 +354,16 @@ IsNAV(){
 inArray(value,stack){
 	for index, element in stack
 	{
-	    if(element = value){
-	    	return True
-	    }
+		if(element = value){
+			return True
+		}
 	}
 	return False
 }
 
 SendMore(hvad, antal){
 	 loop, %antal%{
-            Send %hvad%
+		Send %hvad%
     }
 }
 
