@@ -1,5 +1,8 @@
+;////////////////////- Timere -////////////////////
+
 #Persistent
 SetTimer, CheckPopups, 250
+SetTimer, CheckPopupsTeamViewer, 500
 return
 
 CheckPopups:
@@ -12,10 +15,27 @@ CheckPopupsReload:
 		SetTimer,CheckPopupsReload,Off
 	Return
 
+CheckPopupsTeamViewer:
+		ImageSearch, fX,fY,0,0,A_ScreenWidth,A_ScreenHeight,%A_MyDocuments%/AHK/imageSearch/teamViewerKampange.png 
+		if(fX<>""){
+			MouseGetPos, xpos, ypos
+			;SplashTextOn, , , %fX%-%fY%
+			fX := (fX+55)
+			fY := (fY+55)
+			Click %fX%,%fY%
+			MouseMove xpos,ypos
+			Sleep 200
+		}
+		;SetTimer,CheckPopupsTeamViewer,Off
+	Return
 
 
 
-;////////////////////- ReWrite Tekst -////////////////////
+
+
+
+
+;////////////////////- ReWrite Text -////////////////////
 
 :*:mb::
 	if(checkTitle("\.ahk .*- Sublime")){
@@ -410,40 +430,16 @@ Return
 
 ^<#s:: openProgram("C:\Users\rr\AppData\Local\SourceTree\SourceTree.exe")
 
-^<#d::
-	if !(docD := WinExist("Dokumenter")){
-		run, %userprofile%\documents
-		WinWait, Dokumenter
-	}else{
-		if (docD = WinExist("A")){
-			WinClose, ahk_id %docD%
-		}else{
-			WinActivate, ahk_id %docD%
-		}
-	}
-;run, %A_MyDocuments%
-Return
-
-^<#f::
-	if !(picD := WinExist("Billeder")){
-		run, %userprofile%\pictures
-		WinWait, Billeder
-	}else{
-		if (picD = WinExist("A")){
-			WinClose, ahk_id %picD%
-		}else{
-			WinActivate, ahk_id %picD%
-		}
-	}
-Return
-
 ^<#l:: lightroom()
 ^<#b:: lightroom()
 
-^<#n:: Run, notepad.exe
+^<#n::
+	Run, notepad.exe
+	SplashText("Ny Notepad")
+Return
 ^<#c:: Run, calc.exe
 
-^<#w:: Run, "C:\Program Files\AutoHotkey\AU3_Spy.exe"
+^<#w:: ahkWinSpy()
 
 $^1:: 
 	teamviewer_shiftuser()
@@ -453,6 +449,9 @@ Return
 $^2::
 	cmd_ipconfig()
 Return
+
+$^PrintScreen::printScreenDVDvideoSoft()
+
 
 
 ;////////////////////- Shift -////////////////////
@@ -465,6 +464,36 @@ $+Space::
 		Send +{SPACE}
 	}
 return
+
++<#d::
+	if !(docD := WinExist("Dokumenter")){
+		run, %userprofile%\documents
+		WinWait, Dokumenter
+	}else{
+		if (docD = WinExist("A")){
+			WinClose, ahk_id %docD%
+		}else{
+			WinActivate, ahk_id %docD%
+		}
+	}
+	SplashText("Folder Dokumenter")
+Return
+
++<#f::
+	if !(picD := WinExist("Billeder")){
+		run, %userprofile%\pictures
+		WinWait, Billeder
+	}else{
+		if (picD = WinExist("A")){
+			WinClose, ahk_id %picD%
+		}else{
+			WinActivate, ahk_id %picD%
+		}
+	}
+	SplashText("Folder Billeder")
+Return
+
++^<#b::openProgram("Photoshop.exe")
 
 
 ;////////////////////- ALT -////////////////////
@@ -529,6 +558,22 @@ adobebridge(){
 	WinActivate, ahk_exe Bridge.exe
 }
 
+ahkWinSpy(){
+	path := "C:\Program Files\AutoHotkey\AU3_Spy.exe"
+	if(WinExist("ahk_exe "+ path))
+	{
+		WinActivate, ahk_exe %path%
+		Return
+	}else{
+		Run, %path%
+		WinWait, Active Window Info
+		WinGetPos, wX, wY, wWidth, wHeight
+		xpos := (A_ScreenWidth-wWidth)
+		ypos := (A_ScreenHeight-wHeight-33)
+		WinMove, xpos, ypos ; Move the window found by WinWait to the upper-left corner of the screen.
+	}
+}
+
 cmd_ipconfig(){
 	if(WinActive("ahk_exe cmd.exe")){
 		send ipconfig{enter}
@@ -542,6 +587,7 @@ cmd_ping(){
 
 googleChromeINK(){
 	Run, chrome.exe -incognito http://www.google.com
+	SplashText("Google")
 }
 
 
@@ -641,6 +687,17 @@ pasteWhitOutFormating(){
 	Send, %c%
 }
 
+printScreenDVDvideoSoft(){
+	path := "C:\Program Files (x86)\DVDVideoSoft\Free Screen Video Recorder\FreeScreenVideoRecorder.exe"
+	openProgram(path,false)
+	WinWait, ahk_exe %path%
+	if(WinActive("ahk_exe "+ path)){
+		MouseGetPos, xpos, ypos
+		Click 72,52
+		MouseMove xpos,ypos
+	}
+}
+
 reloadAHK(){
 	if(checkTitle("\.ahk - Sublime")){
 		WinGetTitle, title, A
@@ -719,31 +776,37 @@ teamviewer_close(){
 }
 
 tmc(){
-	IfWinExist Total Commander
-	{
-		WinActivate Total Commander
+	path := "C:\totalcmd\TOTALCMD64.EXE"
+	if(openProgram(path, false)==0){
 		Return
 	}
-	Run, C:\totalcmd\TOTALCMD64.EXE
-	Sleep 1000
-	WinGetText, OutputVar, a
-	;k := RegExReplace(OutputVar, "\n.*\n*","")
-	k := SubStr(OutputVar, 1, 1)
-	Sleep 200
-	if(k=1){
-		tab(2)
-		Send {Enter}
+
+	sleep 1000
+	WinActivate, ahk_exe %path%
+	
+	ImageSearch, fX,fY,0,0,A_ScreenWidth,A_ScreenHeight,%A_MyDocuments%/AHK/imageSearch/totalCmdOpen.png
+	if(fX<>""){
+		WinActivate, ahk_exe %path%
+
+		WinGetText, OutputVar, a
+		;k := RegExReplace(OutputVar, "\n.*\n*","")
+		k := SubStr(OutputVar, 1, 1)
+		Sleep 200
+		if(k=1){
+			tab(2)
+			Send {Enter}
+		}
+		if(k=2){
+			tab(3)
+			Send {Enter}
+		}
+		if(K=3){
+			tab(4)
+			Send {Enter}
+		}
+		Sleep 200
+		Send {tab}
 	}
-	if(k=2){
-		tab(3)
-		Send {Enter}
-	}
-	if(K=3){
-		tab(4)
-		Send {Enter}
-	}
-	Sleep 200
-	Send {tab}
 }
 
 tmc_searche(){
@@ -816,18 +879,18 @@ checkTitle(reg){
 	return False
 }
 
-openProgram(Path){
+openProgram(Path,SplashPrint=true){
 	RegExMatch(Path, "[A-Za-z0-9-_]*\.[a-z]*",FoundPath)
-	if(WinExist("ahk_exe "+ FoundPath))
+	if(WinExist("ahk_exe "+ Path))
 	{
-		WinActivate, ahk_exe %FoundPath%
-		Return
+		WinActivate, ahk_exe %Path%
+		Return 0
 	}
 	Run, %Path%
-
-	SplashTextOn, , , Open %FoundPath%
-	Sleep, 2000
-	SplashTextOff
+	if SplashPrint {
+		SplashText(FoundPath)
+	}
+	Return 1
 }
 
 processExist(Name){
@@ -837,12 +900,19 @@ processExist(Name){
 
 SendMore(hvad,antal){
 	loop, %antal%{
-    	Send %hvad%
-    }
+		Send %hvad%
+	}
 }
 
+SplashText(message){
+	SplashTextOn, , , Open %message%
+	Sleep, 1000
+	SplashTextOff
+}
+
+
 tab(antal){
-    loop, %antal%{
-    	Send {TAB}
-    }
+	loop, %antal%{
+		Send {TAB}
+	}
 }
