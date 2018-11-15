@@ -1,4 +1,13 @@
 ;////////////////////- Timere -////////////////////
+#Persistent
+SetTimer, CheckPopups, 250
+Return
+
+CheckPopups:
+	IfWinActive This is an unregistered copy
+		ControlClick, Button2  ; retry task
+	Return
+
 CheckPopupsReload:
 		ControlClick, Button1, A  ; retry task
 		SetTimer,CheckPopupsReload,Off
@@ -62,6 +71,8 @@ Return
 ;////////////////////- END - ReWrite Text -////////////////////
 
 
+$^PrintScreen::printScreenDVDvideoSoft()
+
 $^s::
 	Send ^s
 	reloadAHK()
@@ -118,6 +129,46 @@ kommentarAfsnitEnd(){
 	}
 }
 
+
+<#w:: googleChromeINK()
+^<#w:: ahkWinSpy()
+
+
+;////////////////////- Functioner -////////////////////
+
+ahkWinSpy(){
+	path := "C:\Program Files\AutoHotkey\AU3_Spy.exe"
+	if(WinExist("ahk_exe "+ path))
+	{
+		WinActivate, ahk_exe %path%
+		Return
+	}else{
+		Run, %path%
+		WinWait, Active Window Info
+		WinGetPos, wX, wY, wWidth, wHeight
+		xpos := (A_ScreenWidth-wWidth)
+		ypos := (A_ScreenHeight-wHeight-33)
+		WinMove, xpos, ypos ; Move the window found by WinWait to the upper-left corner of the screen.
+	}
+}
+
+printScreenDVDvideoSoft(){
+	path := "C:\Program Files (x86)\DVDVideoSoft\Free Screen Video Recorder\FreeScreenVideoRecorder.exe"
+	openProgram(path,false)
+	WinWait, ahk_exe %path%
+	if(WinActive("ahk_exe "+ path)){
+		MouseGetPos, xpos, ypos
+		Click 72,52
+		MouseMove xpos,ypos
+	}
+}
+
+googleChromeINK(){
+	Run, chrome.exe -incognito http://www.google.com
+	SplashText("Google")
+}
+
+
 ;/////////////////////- Functioner til fællesbrug -////////////////////
 
 checkTitle(reg){
@@ -130,8 +181,28 @@ checkTitle(reg){
 	Return False
 }
 
+openProgram(Path,SplashPrint=true){
+	RegExMatch(Path, "[A-Za-z0-9-_]*\.[a-z]*",FoundPath)
+	if(WinExist("ahk_exe "+ Path))
+	{
+		WinActivate, ahk_exe %Path%
+		Return 0
+	}
+	Run, %Path%
+	if SplashPrint {
+		SplashText(FoundPath)
+	}
+	Return 1
+}
+
 SendMore(hvad,antal){
 	loop, %antal%{
 		Send %hvad%
 	}
+}
+
+SplashText(message){
+	SplashTextOn, , , Open %message%
+	Sleep, 1000
+	SplashTextOff
 }
