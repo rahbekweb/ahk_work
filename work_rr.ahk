@@ -11,8 +11,15 @@ CheckPopups:
 	Return
 
 CheckPopupsReload:
-		ControlClick, Button1, A  ; retry task
-		SetTimer,CheckPopupsReload,Off
+		;if(WinActive("ahk_exe AutoHotkey.exe")){
+			WinGetText, OutputVar, a
+			if(RegExMatch(OutputVar,"Error")){
+				Return
+			}
+			
+			ControlClick, Button1, A  ; retry task
+			SetTimer,CheckPopupsReload,Off
+		;}
 	Return
 
 CheckPopupsTeamViewer:
@@ -876,6 +883,16 @@ checkTitle(reg){
 	if(out>0){
 		return True
 	}	
+	return False
+}
+
+inArray(value,stack){
+	for index, element in stack
+	{
+		if(element = value){
+			return True
+		}
+	}
 	return False
 }
 
