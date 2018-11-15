@@ -18,10 +18,26 @@ _feltMedVismere	:= "WindowsForms10.STATIC.app.0.265601d_r9_ad12"
 _feltMedLeveringsnavn	:= "WindowsForms10.EDIT.app.0.265601d_r9_ad145"
 _feltMedForsendelsmetode:= "WindowsForms10.EDIT.app.0.265601d_r9_ad162"
 _running := 0
+_mousePos := []
 
 ;////////////////////- END - fælles variabler -////////////////////
 
 
+
+;////////////////////- check imageSearch -////////////////////
+_e := ""
+_imageSearch := []
+_imageSearch["mappe"] := "C:/AHK/imageSearch/"
+_imageSearch["navSortering"] := "C:/AHK/imageSearch/navSortering.png"
+
+for index, element in _imageSearch
+{
+	if (! FileExist(element)){
+		_e = %_e%`n%element%
+	}
+}
+if(_e<>"")
+	MsgBox, 0x1030, Alert!, FILER eller MAPPER findes ikke:%_e%
 
 
 ;////////////////////- F taster -////////////////////
@@ -29,24 +45,21 @@ _running := 0
 F1::return
 
 $F3::
-	if(IsNAV() && checkTitle("Microsoft Dynamics NAV")){
-		Click 281,223
-		Sleep 200
-		Send {F3}
-	}else{
-		Send {F3}
+	if(f3Nav()){
+		Return
 	}
+	Send {F3}
 Return
 
 
 
 ;////////////////////- NUMPAD -////////////////////
 
-$NumpadSub:: salgsordre_seach()
+$NumpadSub:: salgsordre_search()
 
 $NumpadAdd:: salgsordre_openFirst()
 
-$^NumpadMult:: HT_find_salgsordre()
+$^NumpadMult:: HT_open_find_salgsordre()
 
 
 ;////////////////////- Ctrl -////////////////////
@@ -135,10 +148,12 @@ enterFunctions(){
 	}
 }
 
-HT_find_salgsordre(){
+HT_open_find_salgsordre(){
 	if(IsNAV()){
 		Send ^{F3}
 		Sleep 200
+		ControlGetFocus, HvilketFelt
+		MsgBox %HvilketFelt%
 		Send ^a
 		Sleep 200
 		Send find salgsordre
@@ -159,7 +174,42 @@ HT_find_salgsordre(){
 	}
 }
 
-salgsordre_seach(){
+HT_find_salgsordre_openFirst(){
+	global _f3felt, _running
+
+	IfWinActive Salgsordrer - Microsoft Dynamics NAV
+	{
+		ControlGetFocus, HvilketFelt
+
+		if(HvilketFelt=_f3felt){
+			Send {Enter}
+			Sleep 500
+			Click 259,265
+			Sleep 200
+			Send {Enter}
+
+			_running = 1
+
+			Sleep 1500
+
+			loop, 5{
+				if(_running){
+					Sleep 500
+					if(checkTitle("^Rediger - Salgsordre")){
+						salgsordre_rediger_Borgoeringsdato()
+						Break
+					}
+				}else{
+					Break
+				}
+			}
+			return
+		}
+	}
+	Send {NumpadAdd}
+}
+
+salgsordre_search(){
 	IfWinActive Salgsordrer - Microsoft Dynamics NAV
 	{
 		Click 281,223
@@ -264,26 +314,24 @@ QStregkodeRetail(){
 		IfWinActive Retail varer - Microsoft Dynamics NAV
 		{
 			DoQStregkodeRetail()
-			return
+			Return
 		}else{
-			Send ^{F3}
-			Sleep 200
-			Send retail varer
-			Sleep 200
-			Send {Enter}{Enter}
-			Sleep 200
-			DoQStregkodeRetail()
+			if(openNavPage("retail varer")){
+				DoQStregkodeRetail()
+				Return
+			}
 		}
-	}else{
-		Send ^q
 	}
+	Send ^q
 }
 
 DoQStregkodeRetail(){
-	Send {F3}
+	;tøm søgefelt
+	f3Nav()
 	Sleep 200
 	Send ^a{delete}{Enter}
 	Sleep 200
+	;åben stregkodesøgefelt
 	Send {Control Down}{Shift Down}f{Shift Up}{Control Up}
 }
 
@@ -362,7 +410,7 @@ inArray(value,stack){
 }
 
 SendMore(hvad, antal){
-	 loop, %antal%{
+	loop, %antal%{
 		Send %hvad%
     }
 }
@@ -377,6 +425,22 @@ checkTitle(reg){
 	return False
 }
 
+
+f3Nav(){
+	global _imageSearch
+	if(IsNAV() && checkTitle("- Microsoft Dynamics NAV")){
+		img := _imageSearch["navSortering"]
+		ImageSearch, xclick,yclick,0,0,A_ScreenWidth,A_ScreenHeight,%img%
+		MouseGetPos, xpos,ypos
+		xclick := (xclick+50)
+		Click %xclick%,%yclick%
+		MouseMove xpos,ypos
+		Sleep 200
+		Send {F3}
+		Return True
+	}
+	Return False
+}
 
 
 _FindFeld(){
@@ -394,6 +458,37 @@ _FindFeld(){
 	ControlGetText, OutputVar, WindowsForms10.EDIT.app.0.2aeb54d_r13_ad11, A
 	;ControlGetText, OutputVar, WindowsForms10.EDIT.app.0.2aeb54d_r13_ad111, A
 	;MsgBox %OutputVar%
+}
+
+;åben Page, Report, view by Ctrl F3 felt
+openNavPage(search){
+	if(IsNAV()){
+		if(checkTitle("- Microsoft Dynamics NAV")){
+			Send ^{F3}
+			Sleep 200
+			Send %search%
+			Sleep 200
+			Send {Enter}{Enter}
+			Sleep 200
+			Return True
+		}
+	}
+	Return False
+}
+
+Numpad0 & Numpad1::
+;MsgBox, You pressed Numpad1 while holding down Numpad0.
+saveMouse(1)
+return
+
+
+saveMouse(id){
+	global _mousePos
+	MouseGetPos, x,y
+	_mousePos[%id%] := []
+	_mousePos[%id%]["x"] := x
+	_mousePos[%id%]["y"] := y
+	MsgBox test
 }
 
 errorSMS(messege){
