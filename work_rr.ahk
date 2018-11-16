@@ -89,6 +89,22 @@ return
 	}
 return
 
+:*:rfn::
+	if(checkTitle("\.ahk .*- Sublime")){
+		Send Return False
+	}else{
+		Send rfn
+	}
+return
+
+:*:rtn::
+	if(checkTitle("\.ahk .*- Sublime")){
+		Send Return True
+	}else{
+		Send rtn
+	}
+return
+
 :*:///::
 	kommentarAfsnitStart()
 Return
