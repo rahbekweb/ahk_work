@@ -29,6 +29,7 @@ _e := ""
 _imageSearch := []
 _imageSearch["mappe"] := "C:/AHK/imageSearch/"
 _imageSearch["navSortering"] := "C:/AHK/imageSearch/navSortering.png"
+_imageSearch["navHTsalgsordreplacering"] := "C:/AHK/imageSearch/navHT_webbestilling_salgsordreplacering.png"
 
 for index, element in _imageSearch
 {
@@ -55,11 +56,25 @@ Return
 
 ;////////////////////- NUMPAD -////////////////////
 
-$NumpadSub:: salgsordre_search()
+$NumpadSub::
+	if(salgsordre_search())
+		Return
+	if(HT_find_salgsordre_search())
+		Return
+
+	Send {NumpadSub}
+Return
 
 $NumpadAdd:: salgsordre_openFirst()
 
-$^NumpadMult:: HT_open_find_salgsordre()
+$^NumpadMult::
+	if(IsNAV()){
+		if(HT_open_find_salgsordre()){
+			Return
+		}
+	}
+	Send ^{NumpadMult}
+Return
 
 
 ;////////////////////- Ctrl -////////////////////
@@ -80,11 +95,6 @@ Return
 
 
 ;^g::
-;	if(forsendelstype_droppoint()){
-;		Return
-;	}
-;
-;	Return
 ;		ClipSaved := ClipboardAll ; Save the entire clipboard to a variable of your choice.
 ;		ControlFocus, WindowsForms10.Window.8.app.0.2aeb54d_r13_ad131, A
 ;		Send ^a
@@ -149,29 +159,41 @@ enterFunctions(){
 }
 
 HT_open_find_salgsordre(){
-	if(IsNAV()){
-		Send ^{F3}
-		Sleep 200
-		ControlGetFocus, HvilketFelt
-		MsgBox %HvilketFelt%
-		Send ^a
-		Sleep 200
-		Send find salgsordre
-		Sleep 200
-		Send {Enter}{Enter}
-		Sleep 300
-
-		Loop, 5{
-			if(checkTitle("^Rediger - Find webbestillinger")){
-				Click 173, 205
-				break
-			}
-			Sleep 250
-		}
-		MouseMove 300,400
+	IfWinExist Rediger - Find webbestillinger
+	{
+		WinActivate, Rediger - Find webbestillinger
+		sleep 500
+		HT_find_salgsordre_search()
 	}else{
-		Send {NumpadMult}
+		if(IsNavTitle()){
+			openNavPage("find salgsordre")
+			Sleep 300
+
+			Loop, 5{
+				if(checkTitle("^Rediger - Find webbestillinger")){
+					HT_find_salgsordre_search()
+					break
+				}
+				Sleep 250
+			}
+			Return True
+		}
 	}
+	Return False
+}
+
+HT_find_salgsordre_search(){
+	if(checkTitle("^Rediger - Find webbestillinger")){
+		saveMouse("webbestil")
+		; brug imageSerach istedet 
+		;_imageSearch["navHTsalgsordreplacering"]
+		Click 173, 205
+		resetMouse("webbestil")
+		sleep 200
+		Send ^a
+		Return True
+	}
+	Return False
 }
 
 HT_find_salgsordre_openFirst(){
@@ -210,53 +232,58 @@ HT_find_salgsordre_openFirst(){
 }
 
 salgsordre_search(){
-	IfWinActive Salgsordrer - Microsoft Dynamics NAV
-	{
-		Click 281,223
-		Sleep 200
-		Send {F3}
-		Sleep 200
-		if(IsKundeservice()){
-			SendMore("{Down}",5)
-		}else{
-			SendMore("{Down}",2)
+	if(IsNAV()){
+		IfWinActive Salgsordrer - Microsoft Dynamics NAV
+		{
+			Click 281,223
+			Sleep 200
+			Send {F3}
+			Sleep 200
+			if(IsKundeservice()){
+				SendMore("{Down}",5)
+			}else{
+				SendMore("{Down}",2)
+			}
+			Send {Enter}^a*
+			Return True
 		}
-		Send {Enter}^a*
-	}else{
-		Send {NumpadSub}
 	}
+	Return False
 }
 
 salgsordre_openFirst(){
 	global _f3felt, _running
 
-	IfWinActive Salgsordrer - Microsoft Dynamics NAV
+	if(IsNAV())
 	{
-		ControlGetFocus, HvilketFelt
+		IfWinActive Salgsordrer - Microsoft Dynamics NAV
+		{
+			ControlGetFocus, HvilketFelt
 
-		if(HvilketFelt=_f3felt){
-			Send {Enter}
-			Sleep 500
-			Click 259,265
-			Sleep 200
-			Send {Enter}
+			if(HvilketFelt=_f3felt){
+				Send {Enter}
+				Sleep 500
+				Click 259,265
+				Sleep 200
+				Send {Enter}
 
-			_running = 1
+				_running = 1
 
-			Sleep 1500
+				Sleep 1500
 
-			loop, 5{
-				if(_running){
-					Sleep 500
-					if(checkTitle("^Rediger - Salgsordre")){
-						salgsordre_rediger_Borgoeringsdato()
+				loop, 5{
+					if(_running){
+						Sleep 500
+						if(checkTitle("^Rediger - Salgsordre")){
+							salgsordre_rediger_Borgoeringsdato()
+							Break
+						}
+					}else{
 						Break
 					}
-				}else{
-					Break
 				}
+				return
 			}
-			return
 		}
 	}
 	Send {NumpadAdd}
@@ -317,6 +344,7 @@ QStregkodeRetail(){
 			Return
 		}else{
 			if(openNavPage("retail varer")){
+				sleep 1000
 				DoQStregkodeRetail()
 				Return
 			}
@@ -326,59 +354,21 @@ QStregkodeRetail(){
 }
 
 DoQStregkodeRetail(){
-	;tøm søgefelt
-	f3Nav()
-	Sleep 200
-	Send ^a{delete}{Enter}
-	Sleep 200
-	;åben stregkodesøgefelt
-	Send {Control Down}{Shift Down}f{Shift Up}{Control Up}
-}
-
-forsendelstype(){
-	if(forsendelstype_butikslevering()){
-		Return
-	}
-
-	if(forsendelstype_droppoint()){
-		Return
-	}
-}
-
-forsendelstype_butikslevering(){
-	global _feltMedLeveringsnavn, _feltMedForsendelsmetode
-	
-	ControlGetText, leveringsnavn, %_feltMedLeveringsnavn%, A ; hent leveringsnavn
-	
-	if(RegExMatch(leveringsnavn, "^Spejder Sport")){ ;hvis det er en butiks levering
-		
-		ControlFocus, %_feltMedForsendelsmetode%, A ; set focus i forsendelsmetode
-
-		ControlGetFocus, HvilketFelt, A ;hent hvilket felt der er i focus
-		
-		ControlGetText, forsendelse, %_feltMedForsendelsmetode%, A ; hent forsendelsmetode
-		if(forsendelse="Butik afhentning"){
-			Return true
+	Loop, 5{
+		IfWinActive Retail varer - Microsoft Dynamics NAV
+		{
+			;tøm f3søgefelt
+			f3Nav()
+			Sleep 200
+			Send ^a{delete}{Enter}
+			Sleep 200
+			;åben stregkodesøgefelt
+			Send {Control Down}{Shift Down}f{Shift Up}{Control Up}
+			Return
 		}
-
-		if(HvilketFelt=_feltMedForsendelsmetode){ ;hvis det er det rigtige felt så gør noget
-			Send ^aButik afhentning
-			Return true
-		}
+		sleep 500
 	}
-	Return false
 }
-
-forsendelstype_droppoint(){
-	global _feltMedForsendelsmetode
-	
-	ControlGetText, forsendelse, %_feltMedForsendelsmetode%, A ; hent forsendelsmetode
-	if(forsendelse="PostDK pakkeboks"){
-		Return true
-	}
-	Return false
-}
-
 
 
 ;////////////////////- Function til fælledbrug -////////////////////
@@ -396,6 +386,13 @@ IsNAV(){
 		return true
 	}
 	return false
+}
+
+IsNavTitle(){
+	 if(IsNAV() && checkTitle("- Microsoft Dynamics NAV")){
+	 	Return True
+	 }
+	 Return False
 }
 
 
@@ -427,16 +424,24 @@ checkTitle(reg){
 
 
 f3Nav(){
-	global _imageSearch
-	if(IsNAV() && checkTitle("- Microsoft Dynamics NAV")){
+	global _imageSearch, _f3felt
+	if(IsNavTitle()){
+		WinGetPos, X, Y, Width, Height, A
 		img := _imageSearch["navSortering"]
-		ImageSearch, xclick,yclick,0,0,A_ScreenWidth,A_ScreenHeight,%img%
-		MouseGetPos, xpos,ypos
+		ImageSearch, xclick,yclick,X,Y,Width,Height,%img%
+		if(xclick<>"") Return False
+
+		saveMouse("f3Nav")
 		xclick := (xclick+50)
 		Click %xclick%,%yclick%
-		MouseMove xpos,ypos
+		resetMouse("f3Nav")
 		Sleep 200
 		Send {F3}
+		Sleep 500
+		;ControlGetFocus, HvilketFelt, A
+		;if(HvilketFelt<>_f3felt){
+		;	f3Nav()
+		;}
 		Return True
 	}
 	Return False
@@ -466,6 +471,8 @@ openNavPage(search){
 		if(checkTitle("- Microsoft Dynamics NAV")){
 			Send ^{F3}
 			Sleep 200
+			Send ^a
+			Sleep 200
 			Send %search%
 			Sleep 200
 			Send {Enter}{Enter}
@@ -476,9 +483,12 @@ openNavPage(search){
 	Return False
 }
 
-Numpad0 & Numpad1::
-;MsgBox, You pressed Numpad1 while holding down Numpad0.
-saveMouse(1)
+NumpadIns::
+global _mousePos
+	saveMouse("h")
+	MouseMove 10,10
+	sleep 1000
+	resetMouse("h")
 return
 
 
@@ -488,7 +498,12 @@ saveMouse(id){
 	_mousePos[%id%] := []
 	_mousePos[%id%]["x"] := x
 	_mousePos[%id%]["y"] := y
-	MsgBox test
+}
+
+resetMouse(id){
+	global _mousePos
+	MouseMove _mousePos[%id%]["x"],_mousePos[%id%]["y"]
+	_mousePos.remove([%id%])
 }
 
 errorSMS(messege){
@@ -501,3 +516,8 @@ errorSMS(messege){
 	Send {ALT DOWN}{TAB}{ALT UP}
 	;WinClose, Google
 }
+
+
+
+
+;WinGetPos, X, Y, Width, Height, A
