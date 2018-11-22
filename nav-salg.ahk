@@ -17,6 +17,7 @@ _feltMedDatoLes	:= "WindowsForms10.EDIT.app.0.265601d_r9_ad111"
 _feltMedVismere	:= "WindowsForms10.STATIC.app.0.265601d_r9_ad12"
 _feltMedLeveringsnavn	:= "WindowsForms10.EDIT.app.0.265601d_r9_ad145"
 _feltMedForsendelsmetode:= "WindowsForms10.EDIT.app.0.265601d_r9_ad162"
+_feltMedOrdreTelefonnr:= "WindowsForms10.EDIT.app.0.265601d_r9_ad112"
 _running := 0
 _mousePos := []
 
@@ -65,7 +66,14 @@ $NumpadSub::
 	Send {NumpadSub}
 Return
 
-$NumpadAdd:: salgsordre_openFirst()
+$NumpadAdd::
+	if(salgsordre_openFirst())
+		Return
+	if(HT_find_salgsordre_openFirst())
+		Return
+
+	Send {NumpadAdd}
+Return
 
 $^NumpadMult::
 	if(IsNAV()){
@@ -77,15 +85,22 @@ $^NumpadMult::
 Return
 
 
+$NumpadEnter::
+	enterFunctions()
+	Send {NumpadEnter}
+Return
+
+
 ;////////////////////- Ctrl -////////////////////
 
 $^q:: QStregkodeRetail()
 
 
-;opdater bogførings dato
+;opdater bogførings dato og check telefonnr
 $^d::
-	if(IsNAV){
+	if(IsNAV()){
 		salgsordre_rediger_Borgoeringsdato()
+		salgsordre_check_Telefonnr()
 		Return
 	}
 
@@ -120,10 +135,6 @@ $ENTER::
 	Send {Enter}
 Return
 
-$NumpadEnter::
-	enterFunctions()
-	Send {NumpadEnter}
-Return
 
 
 $ESCAPE::
@@ -183,13 +194,23 @@ HT_open_find_salgsordre(){
 }
 
 HT_find_salgsordre_search(){
+	global _imageSearch, _f3felt
 	if(checkTitle("^Rediger - Find webbestillinger")){
+		ControlGetFocus, HvilketFelt
+		if(HvilketFelt=_f3felt){
+			Send ^a
+			Return True
+		}
+
+		WinGetPos, X, Y, Width, Height, A
+		img := _imageSearch["navHTsalgsordreplacering"]
+		ImageSearch, xclick,yclick,X,Y,Width,Height,%img%
+		if(xclick<>"") Return False
+
 		saveMouse("webbestil")
-		; brug imageSerach istedet 
-		;_imageSearch["navHTsalgsordreplacering"]
-		Click 173, 205
+		xclick := (xclick+50)
+		Click %xclick%,%yclick%
 		resetMouse("webbestil")
-		sleep 200
 		Send ^a
 		Return True
 	}
@@ -199,16 +220,31 @@ HT_find_salgsordre_search(){
 HT_find_salgsordre_openFirst(){
 	global _f3felt, _running
 
-	IfWinActive Salgsordrer - Microsoft Dynamics NAV
-	{
+	if(checkTitle("^Rediger - Find webbestillinger")){
 		ControlGetFocus, HvilketFelt
-
+		
 		if(HvilketFelt=_f3felt){
-			Send {Enter}
-			Sleep 500
-			Click 259,265
+			send {ALT}sø
+			Sleep 1000
+			
+			WinGetText, OutputVar, a			
+			matchs:=RegExMatch(OutputVar,"Der er ingen bogførte poster med dette bilagsnummer.")
+			if(matchs!=0){
+				Send {ENTER}
+				Return True
+			}
+
+			saveMouse("htOpenFirst")
+			Click 30,300
+			resetMouse("htOpenFirst")
 			Sleep 200
-			Send {Enter}
+			Send ^{HOME}
+			sleep 200
+			
+			; Her skal den line lave Image Seach
+
+			HT_find_salgsordre_search()
+			send {ALT}ss
 
 			_running = 1
 
@@ -219,16 +255,17 @@ HT_find_salgsordre_openFirst(){
 					Sleep 500
 					if(checkTitle("^Rediger - Salgsordre")){
 						salgsordre_rediger_Borgoeringsdato()
+						salgsordre_check_Telefonnr()
 						Break
 					}
 				}else{
 					Break
 				}
 			}
-			return
+			Return True
 		}
 	}
-	Send {NumpadAdd}
+	Return False
 }
 
 salgsordre_search(){
@@ -276,17 +313,18 @@ salgsordre_openFirst(){
 						Sleep 500
 						if(checkTitle("^Rediger - Salgsordre")){
 							salgsordre_rediger_Borgoeringsdato()
+							salgsordre_check_Telefonnr()
 							Break
 						}
 					}else{
 						Break
 					}
 				}
-				return
+				Return True
 			}
 		}
 	}
-	Send {NumpadAdd}
+	Return False
 }
 
 salgsordre_rediger_Borgoeringsdato(){
@@ -322,14 +360,29 @@ salgsordre_rediger_Borgoeringsdato(){
 
 			if(HvilketFelt=_feltMedDato){ ;hvis det er det rigtige felt så gør noget
 
-			Send ^ad{Enter} ;opdater Dato
+				Send ^ad{Enter} ;opdater Dato
 			
 			}
 		}else{
 			MsgBox fand ikke Bogføringsfato feltet			
 		}
-	}else{
-		Send ^d
+	}
+}
+
+salgsordre_check_Telefonnr(){
+	global _feltMedOrdreTelefonnr
+
+	if(checkTitle("^Rediger - Salgsordre")){
+		ControlGetText, feltMedTelefonnr, %_feltMedOrdreTelefonnr%, a
+		if(!RegExMatch(feltMedTelefonnr, "^[0-9]{8}$")){
+			MsgBox, 3, , Telefonnummeret er ikke dansk, vil du se mere på det?
+				IfMsgBox, No
+					Return
+				IfMsgBox, Cancel
+					Return
+
+			ControlFocus, %_feltMedOrdreTelefonnr%, A ;forsøg at flyt focus til dato felt
+		}
 	}
 }
 
