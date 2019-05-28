@@ -12,12 +12,13 @@ ipadresserKundeservice := Array("31","32","33","34")
 myIp := StrReplace(A_IPAddress1,"10.45.0.")
 _f3felt := "WindowsForms10.EDIT.app.0.265601d_r9_ad11"
 _feltMedOrdrenr	:= "WindowsForms10.EDIT.app.0.265601d_r9_ad11"
-_feltMedDatoAll	:= "WindowsForms10.EDIT.app.0.265601d_r9_ad116"
-_feltMedDatoLes	:= "WindowsForms10.EDIT.app.0.265601d_r9_ad111"
+_feltMedDatoAll	:= "WindowsForms10.EDIT.app.0.265601d_r9_ad118"
+_feltMedDatoLess	:= "WindowsForms10.EDIT.app.0.265601d_r9_ad111"
 _feltMedVismere	:= "WindowsForms10.STATIC.app.0.265601d_r9_ad12"
 _feltMedLeveringsnavn	:= "WindowsForms10.EDIT.app.0.265601d_r9_ad145"
 _feltMedForsendelsmetode:= "WindowsForms10.EDIT.app.0.265601d_r9_ad162"
-_feltMedOrdreTelefonnr:= "WindowsForms10.EDIT.app.0.265601d_r9_ad112"
+_feltMedOrdreTelefonnrAll:= "WindowsForms10.EDIT.app.0.265601d_r9_ad112"
+_feltMedOrdreTelefonnrLess:= "WindowsForms10.EDIT.app.0.265601d_r9_ad18"
 _running := 0
 _mousePos := []
 
@@ -51,6 +52,12 @@ $F3::
 		Return
 	}
 	Send {F3}
+Return
+
+$F13::
+	if(HT_find_salgsordre_openFirst())
+		Return
+	Send {F13}
 Return
 
 
@@ -328,13 +335,12 @@ salgsordre_openFirst(){
 }
 
 salgsordre_rediger_Borgoeringsdato(){
-	global _feltMedOrdrenr, _feltMedDatoAll, _feltMedDatoLes, _feltMedVismere
+	global _feltMedOrdrenr, _feltMedDatoAll, _feltMedDatoLess, _feltMedVismere
 
 	if(checkTitle("^Rediger - Salgsordre")){
 
-		ControlGetText, feltMedVismereVar, %_feltMedVismere%, a
-		if(feltMedVismereVar=="Vis flere felter")
-			_feltMedDato = %_feltMedDatoLes%
+		if(less())
+			_feltMedDato = %_feltMedDatoLess%
 		else
 			_feltMedDato = %_feltMedDatoAll%
 
@@ -370,11 +376,19 @@ salgsordre_rediger_Borgoeringsdato(){
 }
 
 salgsordre_check_Telefonnr(){
-	global _feltMedOrdreTelefonnr
+	global _feltMedOrdreTelefonnrAll, _feltMedOrdreTelefonnrLess
+	Return
+	if(less()){
+		_feltMedOrdreTelefonnr = %_feltMedOrdreTelefonnrLess%;
+	}else{
+		_feltMedOrdreTelefonnr = %_feltMedOrdreTelefonnrAll%;
+	}
 
 	if(checkTitle("^Rediger - Salgsordre")){
-		ControlGetText, feltMedTelefonnr, %_feltMedOrdreTelefonnr%, a
+		ControlGetText, feltMedTelefonnr, %_feltMedOrdreTelefonnr%, A
+		MsgBox feltMedTelefonnr, "%feltMedTelefonnr%" - %feltMedTelefonnr%
 		if(!RegExMatch(feltMedTelefonnr, "^[0-9]{8}$")){
+			;MsgBox , 0x1030, Alert!, beskeden
 			MsgBox, 3, , Telefonnummeret er ikke dansk, vil du se mere på det?
 				IfMsgBox, No
 					Return
@@ -500,6 +514,15 @@ f3Nav(){
 	Return False
 }
 
+
+less(){
+	global _feltMedVismere
+	ControlGetText, feltMedVismereVar, %_feltMedVismere%, a
+		if(feltMedVismereVar=="Vis flere felter")
+			Return True
+		else
+			Return False
+}
 
 _FindFeld(){
 	loop 20{

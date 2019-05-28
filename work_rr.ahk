@@ -2,7 +2,7 @@
 
 #Persistent
 SetTimer, CheckPopups, 250
-SetTimer, CheckPopupsTeamViewer, 500
+;SetTimer, CheckPopupsTeamViewer, 500
 return
 
 CheckPopups:
@@ -22,19 +22,19 @@ CheckPopupsReload:
 		;}
 	Return
 
-CheckPopupsTeamViewer:
-		ImageSearch, fX,fY,0,0,A_ScreenWidth,A_ScreenHeight,%A_MyDocuments%/AHK/imageSearch/teamViewerKampange.png 
-		if(fX<>""){
-			MouseGetPos, xpos, ypos
-			;SplashTextOn, , , %fX%-%fY%
-			fX := (fX+55)
-			fY := (fY+55)
-			Click %fX%,%fY%
-			MouseMove xpos,ypos
-			Sleep 200
-		}
+;CheckPopupsTeamViewer:
+;		ImageSearch, fX,fY,0,0,A_ScreenWidth,A_ScreenHeight,%A_MyDocuments%/AHK/imageSearch/teamViewerKampange.png 
+;		if(fX<>""){
+;			MouseGetPos, xpos, ypos
+;			;SplashTextOn, , , %fX%-%fY%
+;			fX := (fX+55)
+;			fY := (fY+55)
+;			Click %fX%,%fY%
+;			MouseMove xpos,ypos
+;			Sleep 200
+;		}
 		;SetTimer,CheckPopupsTeamViewer,Off
-	Return
+;	Return
 
 
 
@@ -124,7 +124,7 @@ Return
 	Send 192.168.
 Return
 
-:*:ssp::
+::ssp::
 	Send spejdersport
 Return
 ::adm::
@@ -137,19 +137,19 @@ Return
 		Send 10.45.1
 	Return
 	::ip1::
-		Send 10.45.1.
+		Send 10.45.101.
 	Return
 	::ip2::
-		Send 192.168.107.
+		Send 10.45.102.
 	Return
 	::ip3::
 		Send 192.168.108.
 	Return
 	::ip4::
-		Send 192.168.105.
+		Send 10.45.104.
 	Return
 	::ip5::
-		Send 192.168.109.
+		Send 10.45.105.
 	Return
 	::ip6::
 		Send 192.168.106.
@@ -158,19 +158,19 @@ Return
 		Send 192.168.110.
 	Return
 	::ip9::
-		Send 10.45.109
+		Send 10.45.109.
 	Return
 	::ip11::
-		Send 192.168.100.
+		Send 10.45.111.
 	Return
 	::ip12::
 		Send 10.45.112.
 	Return
 	::ip14::
-		Send 192.168.111.
+		Send 10.45.114.
 	Return
 	::ip15::
-		Send 192.168.113.
+		Send 10.45.115.
 	Return
 	::ip16::
 		Send 192.168.112.
@@ -179,13 +179,13 @@ Return
 		Send 192.168.114.
 	Return
 	::ip18::
-		Send 192.168.115.
+		Send 10.45.118.
 	Return
 	::ip19::
 		Send 192.168.116.
 	Return
 	::ip20::
-		Send 192.168.117.
+		Send 10.45.120.
 	Return
 	::ip21::
 		Send 192.168.118.
@@ -200,91 +200,91 @@ Return
 
 	;////////////////////- butikker -////////////////////
 
-	:*:b1b::
-		Send 01 KBH - Nørre Firmagsgade
+	::b1::
+		Send 01 KBH - Nørre Farimagsgade
 	Return
 
-	:*:b2b::
+	::b2::
 		Send 02 Lyngby
 	Return
 
-	:*:b3b::
+	::b3::
 		Send 03 Odense
 	Return
 
-	:*:b4b::
+	::b4::
 		Send 04 Aarhus
 	Return
 
-	:*:b5b::
+	::b5::
 		Send 05 Aalborg
 	Return
 
-	:*:b6b::
+	::b6::
 		Send 06 Taastrup City2
 	Return
 
-	:*:b7b::
+	::b7::
 		Send 07 Webshoppen
 	Return
 
-	:*:b8b::
+	::b8::
 		Send 08 Kolding
 	Return
 
-	:*:b9b::
+	::b9::
 		Send 09 Næstved
 	Return
 
-	:*:b10b::
+	::b10::
 		Send 10 Roskilde Festival
 	Return
 
-	:*:b11b::
+	::b11::
 		Send 11 Herning
 	Return
 
-	:*:b12b::
+	::b12::
 		Send 12 FRB - Frederiksborggade
 	Return
 
-	:*:b14b::
+	::b14::
 		Send 14 Hillerød
 	Return
 
-	:*:b15b::
+	::b15::
 		Send 15 Roskilde
 	Return
 
-	:*:b16b::
+	::b16::
 		Send 16 Rødovre
 	Return
 
-	:*:b17b::
+	::b17::
 		Send 17 Vejle
 	Return
 
-	:*:b18b::
+	::b18::
 		Send 18 Østerport
 	Return
 
-	:*:b19b::
+	::b19::
 		Send 19 Esbjerg
 	Return
 
-	:*:b20b::
+	::b20::
 		Send 20 Amager
 	Return
 
-	:*:b21b::
+	::b21::
 		Send 21 Rosengaardscenteret
 	Return
 
-	:*:b22b::
+	::b22::
 		Send 22 Horsens
 	Return
 
-	:*:b23b::
+	::b23::
 		Send 23 Viborg
 	Return
 
@@ -316,63 +316,63 @@ Return
 
 ;////////////////////- Gruppenavne -////////////////////
 
-	:*:g1g::
-	:*:1bg::
+	::g1::
+	::1bg::
 		Send 1. Birkerød
 	Return
 
-	:*:g2g::
-	:*:1lg::
+	::g2::
+	::1lg::
 		Send 1. Lillerød
 	Return
 
-	:*:g3g::
-	:*:2bg::
+	::g3::
+	::2bg::
 		Send 2. Birkerød
 	Return
 
-	:*:g4g::
-	:*:big::
+	::g4::
+	::bgg::
 		Send Birkegruppen
 	Return
 
-	:*:g5g::
-	:*:bfg::
+	::g5::
+	::bfg::
 		Send Blackfoot
 	Return
 
-	:*:g6g::
-	:*:bsg::
+	::g6::
+	::bsg::
 		Send Brødeskov
 	Return
 
-	:*:g7g::
-	:*:cng::
+	::g7::
+	::cng::
 		Send Claus Nar
 	Return
 
-	:*:g8g::
-	:*:pag::
+	::g8::
+	::pag::
 		Send Palnatoke
 	Return
 
-	:*:g9g::
-	:*:plg::
+	::g9::
+	::plg::
 		Send Peter Lassen
 	Return
 
-	:*:g10g::
-	:*:smg::
+	::g10::
+	::smg::
 		Send Skjoldmøerne
 	Return
 
-	:*:g11g::
-	:*:svg::
+	::g11::
+	::svg::
 		Send Stavnsholt Vikingerne
 	Return
 
-	:*:g0g::
-	:*:rdg::
+	::g0::
+	::rdg::
 		Send Ravnsholt Division
 	Return
 
@@ -414,6 +414,15 @@ Return
 
 ;////////////////////- Ctrl -////////////////////
 
+$^Left::
+	ptgui_leftfoto()
+	send ^{Left}
+Return
+$^Right::
+	ptgui_rightfoto()
+	send ^{right}
+Return
+
 $^s::
 	Send ^s
 	reloadAHK()
@@ -426,6 +435,9 @@ Return
 
 $^e::
 	if(illustrator_exportPdf()){
+		Return
+	}
+	if(PDFtoIMG()){
 		Return
 	}
 	Send ^e
@@ -458,6 +470,7 @@ Return
 
 ^<#n::
 	Run, notepad.exe
+	WinActivate, notepad
 	SplashText("Ny Notepad")
 Return
 ^<#c:: Run, calc.exe
@@ -572,10 +585,35 @@ Return
 
 
 
+;////////////////////- MUS -////////////////////
+
+;Lbutton::
+ ;   while (GetKeyState("Lbutton", "P")) {
+ ;       Send, F
+ ;   }
+;return
+
+
 ;////////////////////- Functioner til genveje -////////////////////
 
 
+360fly_view(){
+	ImageSearch, fX,fY,0,0,A_ScreenWidth,A_ScreenHeight,%A_MyDocuments%/AHK/imageSearch/teamViewerKampange.png 
+	
+}
+
+
 adobebridge(){
+	if(WinExist("ahk_exe Bridge.exe"))
+	{
+		WinActivate, ahk_exe Bridge.exe
+		Return
+	}
+
+	MsgBox, 4, , Åben Bridge?
+		IfMsgBox, No
+			Return
+
 	openProgram("Bridge.exe")
 	Sleep 5000
 	WinActivate, ahk_exe Bridge.exe
@@ -697,7 +735,7 @@ kontrolpanel_printer(){
 }
 
 lightroom(){
-	openProgram("C:\Program Files\Adobe\Adobe Lightroom Classic CC\Lightroom.exe")
+	openProgram("C:\Program Files\Adobe\Adobe Lightroom Classic\Lightroom.exe")
 }
 
 outlook(){
@@ -710,6 +748,19 @@ pasteWhitOutFormating(){
 	Send, %c%
 }
 
+PDFtoIMG(){
+	if(WinActive("ahk_exe Acrobat.exe")){
+		MsgBox, 4, , Eksport som JPG
+			IfMsgBox, No
+				Return True
+
+		Send !ftij
+		;Sleep 1000
+		Send {ENTER}
+		Return True
+	}
+}
+
 printScreenDVDvideoSoft(){
 	path := "C:\Program Files (x86)\DVDVideoSoft\Free Screen Video Recorder\FreeScreenVideoRecorder.exe"
 	openProgram(path,false)
@@ -717,6 +768,22 @@ printScreenDVDvideoSoft(){
 	if(WinActive("ahk_exe "+ path)){
 		MouseGetPos, xpos, ypos
 		Click 72,52
+		MouseMove xpos,ypos
+	}
+}
+
+ptgui_leftfoto(){
+	if(WinActive("ahk_exe PTGui.exe")){
+		MouseGetPos, xpos, ypos
+		Click 289,66
+		MouseMove xpos,ypos
+	}
+}
+
+ptgui_rightfoto(){
+	if(WinActive("ahk_exe PTGui.exe")){
+		MouseGetPos, xpos, ypos
+		Click 313,68
 		MouseMove xpos,ypos
 	}
 }
