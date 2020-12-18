@@ -1,0 +1,1001 @@
+;////////////////////- Timere -////////////////////
+
+#Persistent
+SetTimer, CheckPopups, 250
+;SetTimer, CheckPopupsTeamViewer, 500
+return
+
+CheckPopups:
+	IfWinActive This is an unregistered copy
+		ControlClick, Button2  ; retry task
+	Return
+
+CheckPopupsReload:
+		;if(WinActive("ahk_exe AutoHotkey.exe")){
+			WinGetText, OutputVar, a
+			if(RegExMatch(OutputVar,"Error")){
+				Return
+			}
+			
+			ControlClick, Button1, A  ; retry task
+			SetTimer,CheckPopupsReload,Off
+		;}
+	Return
+
+;CheckPopupsTeamViewer:
+;		ImageSearch, fX,fY,0,0,A_ScreenWidth,A_ScreenHeight,%A_MyDocuments%/AHK/imageSearch/teamViewerKampange.png 
+;		if(fX<>""){
+;			MouseGetPos, xpos, ypos
+;			;SplashTextOn, , , %fX%-%fY%
+;			fX := (fX+55)
+;			fY := (fY+55)
+;			Click %fX%,%fY%
+;			MouseMove xpos,ypos
+;			Sleep 200
+;		}
+		;SetTimer,CheckPopupsTeamViewer,Off
+;	Return
+
+
+
+
+
+
+
+;////////////////////- ReWrite Text -////////////////////
+
+:*:fcvr::
+	send 13467900
+Return
+
+:*:mb::
+	if(checkTitle("\.ahk .*- Sublime")){
+		Send MsgBox{SPACE}
+	}else{
+		Send mb
+	}
+return
+
+::imb::
+	if(checkTitle("\.ahk .*- Sublime")){
+		Send MsgBox, 4, , `n
+		Send `tIfMsgBox, No`n
+		Send `tReturn`n
+		Sleep 5
+		Send {bs}{bs}
+		Send {up}{up}{up}{END}
+	}else{
+		Send imb{SPACE}
+	}
+return
+
+:*:%::
+	if(checkTitle("\.ahk .*- Sublime")){
+		Send `%`%{left}
+	}else{
+		Send `%
+	}
+return
+
+::sd::
+	if(checkTitle("\.ahk .*- Sublime")){
+		Send Send{SPACE}
+	}else{
+		Send sd{SPACE}
+	}
+return
+
+:*:rn::
+	if(checkTitle("\.ahk .*- Sublime")){
+		Send Return
+	}else{
+		Send rn
+	}
+return
+
+:*:rfn::
+	if(checkTitle("\.ahk .*- Sublime")){
+		Send Return False
+	}else{
+		Send rfn
+	}
+return
+
+:*:rtn::
+	if(checkTitle("\.ahk .*- Sublime")){
+		Send Return True
+	}else{
+		Send rtn
+	}
+return
+
+:*:///::
+	kommentarAfsnitStart()
+Return
+
+:*://e::
+	kommentarAfsnitEnd()
+Return
+
+::jq::
+	Send query{SPACE}
+return
+
+:*:10.::
+	Send 10.45.0.
+Return
+:*:192::
+	Send 192.168.
+Return
+
+::ssp::
+	Send spejdersport
+Return
+::fcc::
+	Send flightcases
+Return
+::adm::
+	Send administrator
+Return
+
+	;////////////////////- IpButikker -////////////////////
+
+	::ipb::
+		Send 10.45.1
+	Return
+	::ip1::
+		Send 10.45.101.
+	Return
+	::ip2::
+		Send 10.45.102.
+	Return
+	::ip3::
+		Send 10.45.103.
+	Return
+	::ip4::
+		Send 10.45.104.
+	Return
+	::ip5::
+		Send 10.45.105.
+	Return
+	::ip6::
+		Send 10.45.106.
+	Return
+	::ip8::
+		Send 10.45.108.
+	Return
+	::ip9::
+		Send 10.45.109.
+	Return
+	::ip11::
+		Send 10.45.111.
+	Return
+	::ip12::
+		Send 10.45.112.
+	Return
+	::ip14::
+		Send 10.45.114.
+	Return
+	::ip15::
+		Send 10.45.115.
+	Return
+	::ip16::
+		Send 10.45.106.
+	Return
+	::ip17::
+		Send 10.45.117.
+	Return
+	::ip18::
+		Send 10.45.118.
+	Return
+	::ip19::
+		Send 10.45.119.
+	Return
+	::ip20::
+		Send 10.45.120.
+	Return
+	::ip21::
+		Send 10.45.121.
+	Return
+	::ip22::
+		Send 10.45.122.
+	Return
+	::ip23::
+		Send 10.45.123.
+	Return
+
+
+	;////////////////////- butikker -////////////////////
+
+	::b1::
+		Send 01 KBH - Nørre Farimagsgade
+	Return
+
+	::b2::
+		Send 02 Lyngby
+	Return
+
+	::b3::
+		Send 03 Odense
+	Return
+
+	::b4::
+		Send 04 Aarhus
+	Return
+
+	::b5::
+		Send 05 Aalborg
+	Return
+
+	::b6::
+		Send 06 Taastrup City2
+	Return
+
+	::b7::
+		Send 07 Webshoppen
+	Return
+
+	::b8::
+		Send 08 Kolding
+	Return
+
+	::b9::
+		Send 09 Næstved
+	Return
+
+	::b10::
+		Send 10 Roskilde Festival
+	Return
+
+	::b11::
+		Send 11 Herning
+	Return
+
+	::b12::
+		Send 12 FRB - Frederiksborggade
+	Return
+
+	::b14::
+		Send 14 Hillerød
+	Return
+
+	::b15::
+		Send 15 Roskilde
+	Return
+
+	::b16::
+		Send 16 Rødovre
+	Return
+
+	::b17::
+		Send 17 Vejle
+	Return
+
+	::b18::
+		Send 18 Østerport
+	Return
+
+	::b19::
+		Send 19 Esbjerg
+	Return
+
+	::b20::
+		Send 20 Amager
+	Return
+
+	::b21::
+		Send 21 Rosengaardscenteret
+	Return
+
+	::b22::
+		Send 22 Horsens
+	Return
+
+	::b23::
+		Send 23 Viborg
+	Return
+
+	:*:blist::
+		Send 01 KBH - Nørre Firmagsgade`r
+		Send 02 Lyngby`r
+		Send 03 Odense`r
+		Send 04 Aarhus`r
+		Send 05 Aalborg`r
+		Send 06 Taastrup City2`r
+		Send 07 Webshoppen`r
+		Send 08 Kolding`r
+		Send 09 Næstved`r
+		Send 10 Roskilde Festival`r
+		Send 11 Herning`r
+		Send 12 FRB - Frederiksborggade`r
+		Send 14 Hillerød`r
+		Send 15 Roskilde`r
+		Send 16 Rødovre`r
+		Send 17 Vejle`r
+		Send 18 Østerport`r
+		Send 19 Esbjerg`r
+		Send 20 Amager`r
+		Send 21 Rosengaardscenteret`r
+		Send 22 Horsens`r
+		Send 23 Viborg`r
+	Return
+
+
+;////////////////////- Gruppenavne -////////////////////
+
+	::g1::
+	::1bg::
+		Send 1. Birkerød
+	Return
+
+	::g2::
+	::1lg::
+		Send 1. Lillerød
+	Return
+
+	::g3::
+	::2bg::
+		Send 2. Birkerød
+	Return
+
+	::g4::
+	::bgg::
+		Send Birkegruppen
+	Return
+
+	::g5::
+	::bfg::
+		Send Blackfoot
+	Return
+
+	::g6::
+	::bsg::
+		Send Brødeskov
+	Return
+
+	::g7::
+	::cng::
+		Send Claus Nar
+	Return
+
+	::g8::
+	::pag::
+		Send Palnatoke
+	Return
+
+	::g9::
+	::plg::
+		Send Peter Lassen
+	Return
+
+	::g10::
+	::smg::
+		Send Skjoldmøerne
+	Return
+
+	::g11::
+	::svg::
+		Send Stavnsholt Vikingerne
+	Return
+
+	::g0::
+	::rdg::
+		Send Ravnsholt Division
+	Return
+
+	:*:glist::
+		Send 1. Birkerød`r
+		Send 1. Lillerød`r
+		Send 2. Birkerød`r
+		Send Birkegruppen`r 
+		Send Blackfoot`r
+		Send Brødeskov`r
+		Send Claus Nar`r
+		Send Palnatoke`r
+		Send Peter Lassen`r
+		Send Skjoldmøerne`r
+		Send Stavnsholt Vikingerne`r
+		Send Ravnsholt Division
+	Return
+
+
+;////////////////////- F-taster -////////////////////
+
+$F1::
+	if(web_save()){
+		MsgBox done
+		Return
+	}
+	Send {F1}
+Return
+
+
+
+
+;////////////////////- Numpad -////////////////////
+
+NumLock::
+	SetNumlockState, on ;set numlock on
+Return
+
+
+;////////////////////- Ctrl -////////////////////
+
+$^Left::
+	ptgui_leftfoto()
+	send ^{Left}
+Return
+$^Right::
+	ptgui_rightfoto()
+	send ^{right}
+Return
+
+$^s::
+	Send ^s
+	reloadAHK()
+	tmc_searche()
+Return
+
+$^+v::
+	pasteWhitOutFormating()
+Return
+
+$^e::
+	if(illustrator_exportPdf()){
+		Return
+	}
+	if(PDFtoIMG()){
+		Return
+	}
+	Send ^e
+Return
+
+$^+r::
+	;// sørg for ikke at resette billederne i lightroom
+	if (WinActive("ahk_exe lightroom.exe")){
+		Send ^+e
+		Return
+	;// END - sørg for ikke at resette billederne i lightroom
+	}else{
+		Send ^+r
+	}
+Return
+
+^+0:: tmc()
+
+^<#t:: teamviewer()
+
+^<#p:: kontrolpanel_printer()
+
+^<#r:: run cmd.exe
+
+
+^<#s:: openProgram("C:\Users\rar\AppData\Local\SourceTree\SourceTree.exe")
+
+^<#l:: lightroom()
+^<#b:: lightroom()
+
+^<#n::
+	Run, notepad.exe
+	WinActivate, notepad
+	SplashText("Ny Notepad")
+Return
+^<#c:: Run, calc.exe
+
+^<#w:: ahkWinSpy()
+
+$^1:: 
+	teamviewer_shiftuser()
+	cmd_ping()
+Return
+
+$^2::
+	cmd_ipconfig()
+Return
+
+$^PrintScreen::printScreenDVDvideoSoft()
+
+
+
+;////////////////////- Shift -////////////////////
+
+$+Space::
+	if(checkTitle("\.ahk .*- Sublime")){
+		Send {{} 
+		Send SPACE
+	}else{
+		Send +{SPACE}
+	}
+return
+
++<#d::
+	if !(docD := WinExist("Dokumenter")){
+		run, %userprofile%\documents
+		WinWait, Dokumenter
+	}else{
+		if (docD = WinExist("A")){
+			WinClose, ahk_id %docD%
+		}else{
+			WinActivate, ahk_id %docD%
+		}
+	}
+	SplashText("Folder Dokumenter")
+Return
+
++<#f::
+	if !(picD := WinExist("Billeder")){
+		run, %userprofile%\pictures
+		WinWait, Billeder
+	}else{
+		if (picD = WinExist("A")){
+			WinClose, ahk_id %picD%
+		}else{
+			WinActivate, ahk_id %picD%
+		}
+	}
+	SplashText("Folder Billeder")
+Return
+
++^<#b::openProgram("Photoshop.exe")
+
+
+;////////////////////- ALT -////////////////////
+
+
+;////////////////////- Win -////////////////////
+
+
+<#b:: adobebridge()
+
+<#c::
+	if(calcD := WinExist("Lommeregner")){
+		WinActivate, ahk_id %calcD%
+	}else{
+		Run, calc.exe
+	}
+Return
+
+<#k:: kontrolpanel()
+
+<#n::
+	if(notepadD := WinExist("ahk_exe notepad.exe")){
+		WinActivate, ahk_id %notepadD%
+	}else{
+		Run, notepad.exe
+	}
+Return
+
+<#o:: outlook()
+
+<#u:: ipNordic()
+
+<#s:: Run, "C:\Program Files\Sublime Text 3\sublime_text.exe"
+
+<#t:: Run, mstsc.exe
+
+<#v:: vpn()
+
+<#w:: googleChromeINK()
+
+
+
+;////////////////////- MUS -////////////////////
+
+;Lbutton::
+ ;   while (GetKeyState("Lbutton", "P")) {
+ ;       Send, F
+ ;   }
+;return
+
+
+;////////////////////- Functioner til genveje -////////////////////
+
+
+360fly_view(){
+	ImageSearch, fX,fY,0,0,A_ScreenWidth,A_ScreenHeight,%A_MyDocuments%/AHK/imageSearch/teamViewerKampange.png 
+	
+}
+
+
+adobebridge(){
+	if(WinExist("ahk_exe Bridge.exe"))
+	{
+		WinActivate, ahk_exe Bridge.exe
+		Return
+	}
+
+	MsgBox, 4, , Åben Bridge?
+		IfMsgBox, No
+			Return
+
+	openProgram("Bridge.exe")
+	Sleep 5000
+	WinActivate, ahk_exe Bridge.exe
+}
+
+ahkWinSpy(){
+	path := "C:\Program Files\AutoHotkey\WindowSpy.ahk"
+	if(WinExist("ahk_exe "+ path))
+	{
+		WinActivate, ahk_exe %path%
+		Return
+	}else{
+		Run, %path%
+		WinWait, Active Window Info
+		WinGetPos, wX, wY, wWidth, wHeight
+		xpos := (A_ScreenWidth-wWidth)
+		ypos := (A_ScreenHeight-wHeight-33)
+		WinMove, xpos, ypos ; Move the window found by WinWait to the upper-left corner of the screen.
+	}
+}
+
+cmd_ipconfig(){
+	if(WinActive("ahk_exe cmd.exe")){
+		send ipconfig{enter}
+	}
+}
+cmd_ping(){
+	if(WinActive("ahk_exe cmd.exe")){
+		send ping{SPACE}
+	}
+}
+
+googleChromeINK(){
+	Run, chrome.exe -incognito http://www.google.com
+	SplashText("Google")
+}
+
+
+illustrator_exportPdf(){
+	if(WinActive("ahk_exe Illustrator.exe")){
+		Send ^!s
+		Sleep 1500
+		ControlGetText, OutputVar, Edit1, A
+		ny:= RegExReplace(OutputVar, " copy.ai$",".pdf")
+		WinClose, %ny%
+		Send %ny%
+		Sleep 500
+		tab(1)
+		SendMore("{down}",2)
+		tab(1)
+		sleep 50
+		Send {enter}
+		Sleep 500
+
+		WinGetText, visuText, a
+		re := RegExMatch(visuText, "Do you want to replace it")
+		if(re>0){
+			Send {enter}
+		}
+		Sleep 3000
+		IfWinExist Save Adobe PDF
+		{
+			WinActivate Save Adobe PDF
+		}
+		IfWinActive Save Adobe PDF
+		{
+			tab(3)
+			SendMore("{down}",50)
+			tab(5)
+			Send {SPACE}
+			send {enter}
+		}
+		Return true
+	}else{
+		Return false
+	}
+}
+
+
+kommentarAfsnitStart(){
+	if(checkTitle("\.ahk")){
+		Send `;
+	}
+	if(checkTitle("\.css")){
+		Send `/*
+	}
+	Send ////////////////////-  -////////////////////
+	if(checkTitle("\.css")){
+		Send *`/
+	}
+	SendMore("{left}",22)
+	if(checkTitle("\.css")){
+		SendMore("{left}",2)
+	}
+}
+kommentarAfsnitEnd(){
+	if(checkTitle("\.ahk")){
+		Send `;
+	}
+	if(checkTitle("\.css")){
+		Send `/*
+	}
+	Send ////////////////////- END -  -////////////////////
+	if(checkTitle("\.css")){
+		Send *`/
+	}
+	SendMore("{left}",22)
+	if(checkTitle("\.css")){
+		SendMore("{left}",2)
+	}
+}
+
+
+kontrolpanel(){
+	run, %SystemRoot%\system32\control.exe
+}
+kontrolpanel_printer(){
+	Run, control printers
+}
+
+lightroom(){
+	openProgram("C:\Program Files\Adobe\Adobe Lightroom Classic\Lightroom.exe")
+}
+
+outlook(){
+	openProgram("outlook.exe")
+}
+
+pasteWhitOutFormating(){
+	c = %clipboard%
+	Trim(c)
+	Send, %c%
+}
+
+PDFtoIMG(){
+	if(WinActive("ahk_exe Acrobat.exe")){
+		MsgBox, 4, , Eksport som JPG
+			IfMsgBox, No
+				Return True
+
+		Send !ftij
+		;Sleep 1000
+		Send {ENTER}
+		Return True
+	}
+}
+
+printScreenDVDvideoSoft(){
+	path := "C:\Program Files (x86)\DVDVideoSoft\Free Screen Video Recorder\FreeScreenVideoRecorder.exe"
+	openProgram(path,false)
+	WinWait, ahk_exe %path%
+	if(WinActive("ahk_exe "+ path)){
+		MouseGetPos, xpos, ypos
+		Click 72,52
+		MouseMove xpos,ypos
+	}
+}
+
+ptgui_leftfoto(){
+	if(WinActive("ahk_exe PTGui.exe")){
+		MouseGetPos, xpos, ypos
+		Click 289,66
+		MouseMove xpos,ypos
+	}
+}
+
+ptgui_rightfoto(){
+	if(WinActive("ahk_exe PTGui.exe")){
+		MouseGetPos, xpos, ypos
+		Click 313,68
+		MouseMove xpos,ypos
+	}
+}
+
+reloadAHK(){
+	if(checkTitle("\.ahk - Sublime")){
+		WinGetTitle, title, A
+
+		stig := RegExReplace(title, "\.ahk .*- Sublime.*","")
+		stig .= ".ahk"
+
+		fil := RegExReplace(stig, ".*\\","")
+		MsgBox, 4, , Vil du reloade %fil%
+			IfMsgBox, No
+				Return
+
+		SetTimer, CheckPopupsReload, 250
+
+		Run, %stig%
+	}
+}
+
+teamviewer(){
+	openProgram("C:\Program Files (x86)\TeamViewer\TeamViewer.exe")
+}
+teamviewer_shiftuser(){
+	if(WinActive("ahk_exe TeamViewer.exe")){
+		IfWinActive TeamViewer
+		{
+			WinActivate, Computere og kontakter ; focus på login menu og gå videre
+		}
+		IfWinActive Computere og kontakter
+		{
+			; login eller skift bruger
+			Click 20,40 ;click i hjørne
+			Sleep 100
+			WinGetText, OutputVar, A ; hent synlig tekst
+			out := RegExMatch(OutputVar, "E-mail") ; se om der står email noget sted
+			if(out=0){ ; hvis der ikke står Email noget sted (vi er logget ind)
+				Sleep 100
+				Click 20,272 ;log ud
+				Sleep 200
+				WinGetText, OutputVar, A ;hent synlig tekst for at kunne finde ud af hvilken bruger der var logget ind
+				c := StrSplit(OutputVar, "`n") ;slit i linjer
+				c:= RegExReplace(c[2], "\r","") ;fjern linjeskift
+				Click 20,36
+
+				Click 45, 200
+				if(c="rahbekweb"){
+					Send ^a
+					Send webmaster@spejdersport.dk
+				}else{
+					Send ^a
+					Send rahbekweb
+				}
+			}
+
+			WinActivate, Computere og kontakter
+			IfWinActive Computere og kontakter
+			{
+				ControlFocus , Edit2, Computere og kontakter
+				Send ^a
+				Send @Fjernstyr4you@{enter}
+			}
+
+			Return
+		}
+	}
+}
+
+tmc(){
+	path := "C:\totalcmd\TOTALCMD64.EXE"
+	if(openProgram(path, false)==0){
+		Return
+	}
+
+	sleep 1000
+	WinActivate, ahk_exe %path%
+	
+	ImageSearch, fX,fY,0,0,A_ScreenWidth,A_ScreenHeight,%A_MyDocuments%/AHK/imageSearch/totalCmdOpen.png
+	if(fX<>""){
+		WinActivate, ahk_exe %path%
+
+		WinGetText, OutputVar, a
+		;k := RegExReplace(OutputVar, "\n.*\n*","")
+		k := SubStr(OutputVar, 1, 1)
+		Sleep 200
+		if(k=1){
+			tab(2)
+			Send {Enter}
+		}
+		if(k=2){
+			tab(3)
+			Send {Enter}
+		}
+		if(K=3){
+			tab(4)
+			Send {Enter}
+		}
+		Sleep 200
+		Send {tab}
+	}
+}
+
+tmc_searche(){
+	IfWinActive Total Commander
+	{
+		Send ^a
+	}
+}
+
+ipNordic(){
+	if(WinExist("ahk_exe Communicator.exe"))
+	{
+		WinActivate, ahk_exe Communicator.exe
+		Return
+	}
+	Run C:\Users\rr\Desktop\ipnordic Communicator.appref-ms
+}
+
+vpn(){
+	if(ProcessExist("vpnui.exe"))
+		sl:=250
+	else sl:=1000
+	Run C:\Program Files (x86)\Cisco\Cisco AnyConnect Secure Mobility Client\vpnui.exe
+	Sleep %sl%
+	WinGetText, OutputVar, A ; hent synlig tekst
+	out := RegExMatch(OutputVar, "Disconnect") ; se om der står Disconnect noget sted
+	if(out=0){ ;hvis der ikke står Disconnect så skal vi ligge ind
+		tab(1)
+		Send vpn.spejdersport.dk{enter}
+	}else{
+		loop, 50{
+			IfWinActive, Cisco AnyConnect Secure Mobility Client
+			break
+			Sleep 250
+		}
+
+		MsgBox, 4, , Disconnect VPN?
+			IfMsgBox, No
+			{
+				WinActivate, Cisco AnyConnect Secure Mobility Client
+				WinClose, Cisco AnyConnect Secure Mobility Client
+				Return
+			}
+
+		ControlClick, Disconnect, Cisco AnyConnect Secure Mobility Client
+		Sleep 250
+		WinClose, Cisco AnyConnect Secure Mobility Client
+	}
+}
+
+web_save(){
+	MsgBox, 4, , hvad vil du
+		IfMsgBox, No
+			Return
+	Return true
+}
+
+
+
+
+;/////////////////////- Functioner til fællesbrug -////////////////////
+
+checkTitle(reg){
+	WinGetTitle, title, A
+	
+	out := RegExMatch(title, reg, m)
+	if(out>0){
+		return True
+	}	
+	return False
+}
+
+inArray(value,stack){
+	for index, element in stack
+	{
+		if(element = value){
+			return True
+		}
+	}
+	return False
+}
+
+openProgram(Path,SplashPrint=true){
+	RegExMatch(Path, "[A-Za-z0-9-_]*\.[a-z]*",FoundPath)
+	if(WinExist("ahk_exe "+ Path))
+	{
+		WinActivate, ahk_exe %Path%
+		Return 0
+	}
+	Run, %Path%
+	if SplashPrint {
+		SplashText(FoundPath)
+	}
+	Return 1
+}
+
+processExist(Name){
+	Process,Exist,%Name%
+	return Errorlevel
+}
+
+SendMore(hvad,antal){
+	loop, %antal%{
+		Send %hvad%
+	}
+}
+
+SplashText(message){
+	SplashTextOn, , , Open %message%
+	Sleep, 1000
+	SplashTextOff
+}
+
+
+tab(antal){
+	loop, %antal%{
+		Send {TAB}
+	}
+}

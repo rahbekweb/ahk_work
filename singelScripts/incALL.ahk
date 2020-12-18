@@ -45,9 +45,9 @@ SendMore(hvad,antal){
 	}
 }
 
-SplashText(message){
+SplashText(message, _sleep=1000){
 	SplashTextOn, , , Open %message%
-	Sleep, 1000
+	Sleep, %_sleep%
 	SplashTextOff
 }
 

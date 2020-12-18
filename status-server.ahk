@@ -5,29 +5,46 @@ F1::
 
 return
 
+$F8::
+	if(checkTitle("Varer - Microsoft Dynamics NAV") || checkTitle("Rediger - Varekort - ")){
+		SplashText("Stregkoder")
+		;sleep 300
+		Send {alt}
+		sleep 100
+		send n
+		sleep 100
+		send i
+
+		Return
+	}
+	Send ^+b
+Return
+
+
 $ENTER::
 	IfWinActive Rediger - Søg stregkode
 	{
 		Send {TAB}
 	}
 	Send {Enter}
-	Sleep 1000
-	Send, ^d
+
+	if(checkTitle("Rediger - Vare-id'er - ")){
+		Sleep 200
+		Send {tab}
+		Send s
+		sleep 200
+		Send {tab}
+		sleep 1000
+		Send ^{enter}
+		sleep 200
+		WinActivate, ahk_exe Microsoft.Dynamics.Nav.Client.exe
+		sleep 200
+		send {f3}
+	}
 Return
 
 
-$F2::
-    WinGetTitle, title, A
-
-    if(InStr(title, "Lageropgørelseskladde")){
-        Click, 797 167
-	MouseMove 797, 100
-        Sleep 100
-        Send, ^a
-    }else{
-        Send {F2}
-    }
-Return
+$F2::retfoerste()
 
 $F3::
     WinGetTitle, title, A
@@ -47,7 +64,7 @@ Return
 
 $^q:: QStregkodeRetail()
 
-$^d:: DoPlaceringsindhold()
+;$^d:: DoPlaceringsindhold()
 
 
 QStregkodeRetail(){
@@ -157,3 +174,37 @@ errorSMS(messege){
 	Send {ALT DOWN}{TAB}{ALT UP}
 	;WinClose, Google
 }
+
+retfoerste(){
+	WinGetTitle, title, A
+
+    if(InStr(title, "Lageropgørelseskladde")){
+        Click, 912 306
+        sleep 100
+	MouseMove 912, 206
+        Sleep 250
+        Send, ^a
+    }else{
+        Send {F2}
+    }
+}
+
+SplashText(message){
+	SplashTextOn, , , Open %message%
+	Sleep, 1000
+	SplashTextOff
+}
+
+
+$F12::
+	if(checkTitle("Rediger - Lageropgørelseskladde - ")){
+		Click, 120 85
+		Sleep 300
+		send {tab}
+		Send RAR4
+		Send {tab}{tab}{tab}{tab}{tab}{tab}
+
+		Return
+	}
+	Send {F12}
+Return

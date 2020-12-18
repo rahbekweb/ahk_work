@@ -2,10 +2,22 @@ SetWorkingDir %A_ScriptDir%
 #Include %A_ScriptDir%/incALL.ahk
 
 if(openProgram("outlook.exe")==1){
-	sleep 300
+	sleep 1000
 }
 
 
-SplashText("Ny Mail")
+Loop, 10
+{
+	openProgram("outlook.exe",false)
 
-Send ^+m
+	if(WinActive("ahk_exe outlook.exe")){
+
+		if(!checkTitle("bner - Outlook")){
+			SplashText("Ny Mail")
+			Send ^+m
+			exitApp
+		}
+	}
+	sleep 500
+}
+SplashText("FEJLEDE - Ny Mail",3000)
