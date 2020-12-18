@@ -124,6 +124,10 @@ Return
 	Send 192.168.
 Return
 
+
+::fcc::
+	Send flightcases
+Return
 ::ssp::
 	Send spejdersport
 Return
@@ -854,6 +858,8 @@ teamviewer_shiftuser(){
 	}
 }
 teamviewer_close(){
+	;//denne function bruges ikke PT
+	return false
 	if(WinActive("ahk_exe TeamViewer.exe"))
 	{
 		WinActivate, TeamViewer
