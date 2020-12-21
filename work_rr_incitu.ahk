@@ -327,15 +327,22 @@ $^Right::
 	send ^{right}
 Return
 
-$^s::
-	Send ^s
-	reloadAHK()
-	tmc_searche()
+$^PrintScreen::printScreenDVDvideoSoft()
+
+^+0:: tmc()
+
+$^1:: 
+	teamviewer_shiftuser()
+	cmd_ping()
 Return
 
-$^+v::
-	pasteWhitOutFormating()
+$^2::
+	cmd_ipconfig()
 Return
+
+^<#b:: lightroom()
+
+^<#c:: Run, calc.exe
 
 $^e::
 	if(illustrator_exportPdf()){
@@ -346,6 +353,20 @@ $^e::
 	}
 	Send ^e
 Return
+
+^<#l:: lightroom()
+
+^<#n::
+	Run, notepad.exe
+	WinActivate, notepad
+	SplashText("Ny Notepad")
+Return
+
+^<#o::msteams()
+
+^<#p:: kontrolpanel_printer()
+
+^<#r:: run cmd.exe
 
 $^+r::
 	;// sørg for ikke at resette billederne i lightroom
@@ -358,43 +379,24 @@ $^+r::
 	}
 Return
 
-^+0:: tmc()
-
-^<#t:: teamviewer()
-
-^<#p:: kontrolpanel_printer()
-
-^<#r:: run cmd.exe
-
+$^s::
+	Send ^s
+	reloadAHK()
+	tmc_searche()
+Return
 
 ^<#s::
 	path = C:\Users\%A_UserName%\AppData\Local\SourceTree\SourceTree.exe
 	openProgram(path)
 Return
 
-^<#l:: lightroom()
-^<#b:: lightroom()
+^<#t:: teamviewer()
 
-^<#n::
-	Run, notepad.exe
-	WinActivate, notepad
-	SplashText("Ny Notepad")
+$^+v::
+	pasteWhitOutFormating()
 Return
-^<#c:: Run, calc.exe
 
 ^<#w:: ahkWinSpy()
-
-$^1:: 
-	teamviewer_shiftuser()
-	cmd_ping()
-Return
-
-$^2::
-	cmd_ipconfig()
-Return
-
-$^PrintScreen::printScreenDVDvideoSoft()
-
 
 
 ;////////////////////- Shift -////////////////////
@@ -438,7 +440,6 @@ Return
 
 +^<#b::openProgram("Photoshop.exe")
 
-+<#o::msteams()
 +<#t::googleTranslateINK()
 
 
