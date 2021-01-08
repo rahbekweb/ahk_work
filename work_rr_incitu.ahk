@@ -143,6 +143,10 @@ return
 	::tdf::
 		Send %A_YYYY%-%A_MM%-%A_DD%-%A_Hour%%A_Min%_
 	Return
+
+	::tdff::
+		Send %A_YYYY%%A_MM%%A_DD%-%A_Hour%%A_Min%_
+	Return
 	;////////////////////- END - time -////////////////////
 
 :*:10.::
@@ -164,12 +168,19 @@ Return
 ::rr::
 	Send Rasmus Rahbek{SPACE}
 Return
+::rw::
+	Send rahbekweb
+Return
 ::rs::
 	Send Rasmus{SPACE}
 Return
 ::r@::
 	Send rara@incitu.dk
 Return
+::rw@::
+	Send rahbekweb@gmail.com
+Return
+
 ::adm::
 	Send administrator
 Return
