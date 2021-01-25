@@ -197,6 +197,10 @@ Return
 	Send Flemming{SPACE}
 Return
 
+::ppy::
+	Send phlophy
+Return
+
 	;////////////////////- IpButikker -////////////////////
 
 	::ipb::
@@ -556,9 +560,40 @@ cmd_ping(){
 	}
 }
 
+
 googleChromeINK(){
 	Run, chrome.exe -incognito https://www.google.com
+	imgs := A_MyDocuments "\AHK\imageSearch\google_accept.png"
+	imgs2 := A_MyDocuments "\AHK\imageSearch\google_accept_small.png"
 	SplashText("Google")
+	WinActivate, ahk_exe chrome.exe
+	;WinGet, MinMax, MinMax
+	;If !MinMax {
+		sleep 500
+		WinMaximize, ahk_exe chrome.exe
+	;}
+	WinGetPos, X, Y, Width, Height, ahk_exe chrome.exe
+	WinActivate, ahk_exe chrome.exe
+	ImageSearch, fX,fY,X,Y,Width,Height,%imgs%
+	ImageSearch, fX2,fY2,X,Y,Width,Height,%imgs2%
+		;if (ErrorLevel = 2)
+		;	MsgBox Could not conduct the search.
+		;else if (ErrorLevel = 1)
+		;	MsgBox Icon could not be found on the screen.
+		;else
+		;	MsgBox The icon was found at %fx%x%fy%.
+	WinActivate, ahk_exe chrome.exe
+	if(fX<>"" || fX2<>""){
+		if(fX2<>""){
+			fX := fX2
+			fY := fY2
+		}
+		MouseGetPos, xpos, ypos
+		MouseMove (fX+5),(fY+5)
+		click (fX+5),(fY+5)
+		MouseMove xpos,ypos
+	}
+		
 }
 
 googleTranslateINK(){
@@ -808,8 +843,10 @@ tmc(){
 	sleep 1000
 	WinActivate, ahk_exe %path%
 	
-	ImageSearch, fX,fY,0,0,A_ScreenWidth,A_ScreenHeight,%A_MyDocuments%/AHK/imageSearch/totalCmdOpen.png
-	if(fX<>""){
+
+	;ImageSearch, fX,fY,0,0,A_ScreenWidth,A_ScreenHeight,%A_MyDocuments%\AHK\imageSearch\totalCmdOpen.png
+	;ImageSearch, fX_dark,fY,0,0,A_ScreenWidth,A_ScreenHeight,%A_MyDocuments%\AHK\imageSearch\totalCmdOpen_dark.png
+	;if(fX<>""||fX_dark<>""){
 		WinActivate, ahk_exe %path%
 
 		WinGetText, OutputVar, a
@@ -830,7 +867,7 @@ tmc(){
 		}
 		Sleep 200
 		Send {tab}
-	}
+	;}
 }
 
 tmc_searche(){
