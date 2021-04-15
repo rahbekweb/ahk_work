@@ -143,6 +143,9 @@ return
 	::tdf::
 		Send %A_YYYY%-%A_MM%-%A_DD%-%A_Hour%%A_Min%_
 	Return
+	::Ftd::
+		Send _%A_YYYY%-%A_MM%-%A_DD%-%A_Hour%%A_Min%
+	Return
 
 	::tdff::
 		Send %A_YYYY%%A_MM%%A_DD%-%A_Hour%%A_Min%_
@@ -199,6 +202,19 @@ Return
 
 ::ppy::
 	Send phlophy
+Return
+
+::ppyd::
+	Send phlophydemo.netkraft.me
+Return
+
+::ppydad::
+	Send phlophydemo.netkraft.me/wp-admin/
+Return
+
+
+::ppyp::
+	SendRaw aarZGyW^vqYG^^Nk^mshq2W$
 Return
 
 	;////////////////////- IpButikker -////////////////////
@@ -725,7 +741,7 @@ outlook(){
 pasteWhitOutFormating(){
 	c = %clipboard%
 	Trim(c)
-	Send, %c%
+	SendRaw, %c%
 }
 
 PDFtoIMG(){
