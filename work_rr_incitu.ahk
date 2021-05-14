@@ -469,6 +469,20 @@ Return
 	SplashText("Folder Billeder")
 Return
 
++<#k::
+	if !(picD := WinExist("Kunder")){
+		run, M:\Faelles_IT (Team Folder)\Kunder
+		WinWait, Kunder
+	}else{
+		if (picD = WinExist("A")){
+			WinClose, ahk_id %picD%
+		}else{
+			WinActivate, ahk_id %picD%
+		}
+	}
+	SplashText("Folder Kunder")
+Return
+
 +^<#b::openProgram("Photoshop.exe")
 
 +<#t::googleTranslateINK()
@@ -741,7 +755,74 @@ outlook(){
 pasteWhitOutFormating(){
 	c = %clipboard%
 	Trim(c)
-	SendRaw, %c%
+
+	IF GetKeyState("CapsLock","T") {
+		Gui, Add, Text,,Hvordan vil du PASTE
+		Gui, Add, Button, x10 y40 w70 h20 , &UPPER
+		Gui, Add, Button, x90 y40 w70 h20 , &LOWER
+		Gui, Add, Button, x10 y70 w70 h20 , &CAPITALIZ
+		Gui, Add, Button, x90 y70 w70 h20 , &INVERT
+		Gui, Add, Button, x170 y40 w70 h50 , &STANDARD
+		Gui, Show, AutoSize Center, Past muligheder
+		GuiControl, +Default, &STANDARD
+		Return
+
+		ButtonUPPER:
+		Gui, Submit
+		Gui Destroy
+		c = %clipboard%
+		Trim(c)
+		StringUpper c, c
+		SendRaw, %c%
+		Return
+
+		ButtonLOWER:
+		Gui, Submit
+		Gui Destroy
+		c = %clipboard%
+		Trim(c)
+		StringLower c, c
+		SendRaw, %c%
+		Return
+
+		ButtonCAPITALIZ:
+		Gui, Submit
+		Gui Destroy
+		c = %clipboard%
+		Trim(c)
+		StringUpper c, c,T
+		SendRaw, %c%
+		Return
+
+		ButtonINVERT:
+		Gui, Submit
+		Gui Destroy
+		c = %clipboard%
+		Trim(c)
+		Lab_Invert_Char_Out:= ""
+		Loop % Strlen(c) {
+			Lab_Invert_Char:= Substr(c, A_Index, 1)
+			if Lab_Invert_Char is upper
+				Lab_Invert_Char_Out:= Lab_Invert_Char_Out Chr(Asc(Lab_Invert_Char) + 32)
+			else if Lab_Invert_Char is lower
+				Lab_Invert_Char_Out:= Lab_Invert_Char_Out Chr(Asc(Lab_Invert_Char) - 32)
+			else
+				Lab_Invert_Char_Out:= Lab_Invert_Char_Out Lab_Invert_Char
+		}
+		SendRaw %Lab_Invert_Char_Out%
+		Return
+
+		ButtonSTANDARD:
+		Gui, Submit
+		Gui Destroy
+		c = %clipboard%
+		Trim(c)
+		SendRaw, %c%
+		Return
+	}ELSE{
+		SendRaw, %c%
+	}
+	Return
 }
 
 PDFtoIMG(){
