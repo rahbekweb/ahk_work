@@ -40,6 +40,11 @@ CheckPopupsReload:
 
 
 
+;////////////////////- VARIABLER -////////////////////
+GLOBAL clip = ""
+GLOBAL clip_old = ""
+
+
 
 ;////////////////////- ReWrite Text -////////////////////
 
@@ -489,6 +494,7 @@ Return
 
 
 ;////////////////////- ALT -////////////////////
+!<#f:: formateText()
 
 
 ;////////////////////- Win -////////////////////
@@ -590,6 +596,91 @@ cmd_ping(){
 	}
 }
 
+clip_save(){
+	clip_old = %clipboard%
+}
+clip_copy(trim=true, doCopy=false){
+	if(doCopy){
+		clip_save()
+		Send ^c
+		ClipWait, 2
+	}
+	clip = %clipboard%
+	if(trim){
+		Trim(clip)
+	}
+	if(clip==""){
+		clip=""
+	}
+	return clip
+}
+clip_past(c){
+	Clipboard := c
+	ClipWait, 2
+	Send ^v
+	Clipboard := clip_old
+	ClipWait, 2
+}
+
+formateText(){
+	clip_copy(false,true)
+
+	Gui, Add, Text,,Hvordan vil du formatere den markerede tekst
+	Gui, Add, Button, x10 y40 w70 h20 , formatUpper
+	Guicontrol,,Button1, &UPPER
+	Gui, Add, Button, x90 y40 w70 h20 , formatLower
+	Guicontrol,,Button2, &LOWER
+	Gui, Add, Button, x10 y70 w70 h20 , formatCapitaliz
+	Guicontrol,,Button3, &CAPITALIZ
+	Gui, Add, Button, x90 y70 w70 h20 , formateInvert
+	Guicontrol,,Button4, &INVERT
+	Gui, Add, Button, x10 y100 w70 h20 , formateFlip
+	Guicontrol,,Button5, &FLIP TEXT
+	Gui, Add, Button, x170 y40 w70 h50 , formateDefault
+	Guicontrol,,Button6, &STANDARD
+	Gui, Show, AutoSize Center, Past muligheder
+	GuiControl, +Default, &STANDARD
+	Return
+
+	ButtonformatUpper:
+		Gui, Submit
+		Gui Destroy
+		StringUpper clip, clip
+		clip_past(clip)
+	Return
+
+	ButtonformatLower:
+		Gui, Submit
+		Gui Destroy
+		StringLower clip, clip
+		clip_past(clip)
+	Return
+
+	ButtonformatCapitaliz:
+		Gui, Submit
+		Gui Destroy
+		StringUpper clip, clip,T
+		clip_past(clip)
+	Return
+
+	ButtonformateInvert:
+		Gui, Submit
+		Gui Destroy
+		clip_past(InventTextUpperLower(clip))
+	Return
+
+	ButtonformateFlip:
+		Gui, Submit
+		Gui Destroy
+		clip_past(InventText(clip))
+	Return
+
+	ButtonformateDefault:
+		Gui, Submit
+		Gui Destroy
+		clip_past(clip)
+	Return
+}
 
 googleChromeINK(){
 	Run, chrome.exe -incognito https://www.google.com
@@ -671,7 +762,28 @@ illustrator_exportPdf(){
 		Return false
 	}
 }
+InventText(text){
+	Lab_Invert_Char_Out:= ""
+	Loop % Strlen(text) {
+		Lab_Invert_Char:= Substr(text, A_Index, 1)
+			Lab_Invert_Char_Out:= Lab_Invert_Char Lab_Invert_Char_Out
+	}
+	Return Lab_Invert_Char_Out
+}
+InventTextUpperLower(text){
+	Lab_Invert_Char_Out:= ""
+	Loop % Strlen(text) {
+		Lab_Invert_Char:= Substr(text, A_Index, 1)
+		if Lab_Invert_Char is upper
+			Lab_Invert_Char_Out:= Lab_Invert_Char_Out Chr(Asc(Lab_Invert_Char) + 32)
+		else if Lab_Invert_Char is lower
+			Lab_Invert_Char_Out:= Lab_Invert_Char_Out Chr(Asc(Lab_Invert_Char) - 32)
+		else
+			Lab_Invert_Char_Out:= Lab_Invert_Char_Out Lab_Invert_Char
+	}
 
+	Return Lab_Invert_Char_Out
+}
 
 kommentarAfsnitStart(){
 	if(checkTitle("\.ahk")){
@@ -752,9 +864,13 @@ outlook(){
 	openProgram("outlook.exe")
 }
 
+
+
+
+
 pasteWhitOutFormating(){
-	c = %clipboard%
-	Trim(c)
+	clip_save()
+	clip_copy()
 
 	IF GetKeyState("CapsLock","T") {
 		Gui, Add, Text,,Hvordan vil du PASTE
@@ -768,59 +884,44 @@ pasteWhitOutFormating(){
 		Return
 
 		ButtonUPPER:
-		Gui, Submit
-		Gui Destroy
-		c = %clipboard%
-		Trim(c)
-		StringUpper c, c
-		SendRaw, %c%
+			Gui, Submit
+			Gui Destroy
+			StringUpper clip, clip
+			clip_past(clip)
+			;SendRaw, %clip%
 		Return
 
 		ButtonLOWER:
-		Gui, Submit
-		Gui Destroy
-		c = %clipboard%
-		Trim(c)
-		StringLower c, c
-		SendRaw, %c%
+			Gui, Submit
+			Gui Destroy
+			StringLower clip, clip
+			clip_past(clip)
+			;SendRaw, %clip%
 		Return
 
 		ButtonCAPITALIZ:
-		Gui, Submit
-		Gui Destroy
-		c = %clipboard%
-		Trim(c)
-		StringUpper c, c,T
-		SendRaw, %c%
+			Gui, Submit
+			Gui Destroy
+			StringUpper clip, clip,T
+			clip_past(clip)
+			;SendRaw, %clip%
 		Return
 
 		ButtonINVERT:
-		Gui, Submit
-		Gui Destroy
-		c = %clipboard%
-		Trim(c)
-		Lab_Invert_Char_Out:= ""
-		Loop % Strlen(c) {
-			Lab_Invert_Char:= Substr(c, A_Index, 1)
-			if Lab_Invert_Char is upper
-				Lab_Invert_Char_Out:= Lab_Invert_Char_Out Chr(Asc(Lab_Invert_Char) + 32)
-			else if Lab_Invert_Char is lower
-				Lab_Invert_Char_Out:= Lab_Invert_Char_Out Chr(Asc(Lab_Invert_Char) - 32)
-			else
-				Lab_Invert_Char_Out:= Lab_Invert_Char_Out Lab_Invert_Char
-		}
-		SendRaw %Lab_Invert_Char_Out%
+			Gui, Submit
+			Gui Destroy
+			clip_past(InventTextUpperLower(clip))
 		Return
 
 		ButtonSTANDARD:
-		Gui, Submit
-		Gui Destroy
-		c = %clipboard%
-		Trim(c)
-		SendRaw, %c%
+			Gui, Submit
+			Gui Destroy
+			clip_past(clip)
+			;SendRaw, %clip%
 		Return
 	}ELSE{
-		SendRaw, %c%
+		clip_past(clip)
+		;SendRaw, %clip%
 	}
 	Return
 }
