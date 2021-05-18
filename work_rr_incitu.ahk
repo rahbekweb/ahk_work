@@ -43,7 +43,8 @@ CheckPopupsReload:
 ;////////////////////- VARIABLER -////////////////////
 GLOBAL clip = ""
 GLOBAL clip_old = ""
-
+GLOBAL UpDownR_start = ""
+GLOBAL UpDownR_antal = ""
 
 
 ;////////////////////- ReWrite Text -////////////////////
@@ -490,6 +491,8 @@ Return
 
 +^<#b::openProgram("Photoshop.exe")
 
++^<#l::loopingPast()
+
 +<#t::googleTranslateINK()
 
 
@@ -560,7 +563,7 @@ adobebridge(){
 		Return
 	}
 
-	MsgBox, 4, , Åben Bridge?
+	MsgBox, 292, , Åben Bridge?
 		IfMsgBox, No
 			Return
 
@@ -839,7 +842,56 @@ kontrolpanel_printer(){
 }
 
 lightroom(){
+	MsgBox, 292, , Open Lightroom
+		IfMsgBox, No
+			Return
+
 	openProgram("C:\Program Files\Adobe\Adobe Lightroom Classic\Lightroom.exe")
+}
+
+loopingNumber(startFrom, numberOfLoops){
+	;if(startFrom>numberOfLoops){
+	;	n := startFrom
+	;	startFrom := numberOfLoops
+	;	numberOfLoops := n
+	;}
+
+	out := ""
+	n := (startFrom-1)
+	loop %numberOfLoops%{
+		n++
+		if(n==startFrom){
+			out := n
+		}else{
+			out := out "`n" n
+		}
+	}
+	MsgBox, 4, , PAST %numberOfLoops% STARTING FROM %startFrom%
+		IfMsgBox, No
+			Return
+	return out
+}
+
+
+loopingPast(){
+	clip_save()
+	Gui, Add, Text,, Antal Loops
+	Gui, Add, Edit
+	Gui, Add, UpDown, vUpDownR_antal Range1-10000, 5
+	Gui, Add, Text,, Start Fra Nr
+	Gui, Add, Edit
+	Gui, Add, UpDown, vUpDownR_start Range1-10000, 1
+	Gui, Add, Button, Default w80, DO
+	Guicontrol,,Button1, &OK
+	Gui, Show
+	Return
+
+	buttonDO:
+		GuiControlGet, UpDownR_start 
+		GuiControlGet, UpDownR_antal
+		Gui,Destroy
+		clip_past(loopingNumber(UpDownR_start,UpDownR_antal))
+		Return
 }
 
 msteams(){
@@ -1118,7 +1170,7 @@ vpn(){
 }
 
 web_save(){
-	MsgBox, 4, , hvad vil du
+	MsgBox, 292, , vil du sende F1
 		IfMsgBox, No
 			Return
 	Return true
