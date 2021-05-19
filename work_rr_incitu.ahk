@@ -367,11 +367,42 @@ Return
 $^PrintScreen::printScreenDVDvideoSoft()
 
 $^f2::
+	cdordArray := ["Notesblok", "Outlook", "Word"] ; "\.pdf"]
+	for index, element in cdordArray
+	{
+		if(checktitle(element)){
+			clip_copy(false,true)
+			if(!checktitle("read\.html")){
+				Run, chrome.exe -incognito file://%A_MyDocuments%/AHK/read.html
+				SplashText("read")
+				sleep 500
+			}
+			send ^v
+			sleep 500
+			send ^a
+			sleep 200
+			Send ^{F2}
+			sleep 1000
+			clip_reset()
+			MsgBox, 4, , Luk vindue
+				IfMsgBox, No
+					Return
+
+			if(checktitle("read\.html")){
+				Send ^{f4}
+			}
+			Return
+		}
+	}
+
+
 	clip_save()
-	Send ^{F2}
 	sleep 500
+	Send ^{F2}
+	sleep 1000
 	clip_reset()
 	Return
+Return
 
 ^+0:: tmc()
 
