@@ -366,6 +366,13 @@ Return
 
 $^PrintScreen::printScreenDVDvideoSoft()
 
+$^f2::
+	clip_save()
+	Send ^{F2}
+	sleep 500
+	clip_reset()
+	Return
+
 ^+0:: tmc()
 
 $^1:: 
@@ -599,9 +606,6 @@ cmd_ping(){
 	}
 }
 
-clip_save(){
-	clip_old = %clipboard%
-}
 clip_copy(trim=true, doCopy=false){
 	if(doCopy){
 		clip_save()
@@ -621,8 +625,14 @@ clip_past(c){
 	Clipboard := c
 	ClipWait, 2
 	Send ^v
+	clip_reset()
+}
+clip_reset(){
 	Clipboard := clip_old
 	ClipWait, 2
+}
+clip_save(){
+	clip_old = %clipboard%
 }
 
 formateText(){
