@@ -41,6 +41,9 @@ CheckPopupsReload:
 
 
 ;////////////////////- VARIABLER -////////////////////
+GLOBAL clip_insert = ""
+GLOBAL clip_insert_counter = -1
+GLOBAL clip_insert_total = ""
 GLOBAL clip = ""
 GLOBAL clip_old = ""
 GLOBAL UpDownR_start = ""
@@ -76,7 +79,12 @@ return
 
 :*:%::
 	if(checkTitle("\.ahk .*- Sublime")){
-		Send `%`%{left}
+		clip_copy(false, true)
+		Send `%
+		Send, ^v
+		Send `%
+		;Send `%`%{left}
+		clip_reset()
 	}else{
 		Send `%
 	}
@@ -343,6 +351,9 @@ $F1::
 	Send {F1}
 Return
 
+^Insert::nextInsert()
++^Insert::nextInsertStartOver()
+!+^Insert::nextInsertReset()
 
 
 
@@ -365,6 +376,44 @@ $^Right::
 Return
 
 $^PrintScreen::printScreenDVDvideoSoft()
+
+$^f2::
+	cdordArray := ["Notesblok", "Outlook", "Word"] ; "\.pdf"]
+	for index, element in cdordArray
+	{
+		if(checktitle(element)){
+			clip_copy(false,true)
+			if(!checktitle("read\.html")){
+				Run, chrome.exe -incognito file://%A_MyDocuments%/AHK/read.html
+				SplashText("read")
+				sleep 500
+			}
+			send ^v
+			sleep 500
+			send ^a
+			sleep 200
+			Send ^{F2}
+			sleep 1000
+			clip_reset()
+			MsgBox, 4, , Luk vindue
+				IfMsgBox, No
+					Return
+
+			if(checktitle("read\.html")){
+				Send ^{f4}
+			}
+			Return
+		}
+	}
+
+
+	clip_save()
+	sleep 500
+	Send ^{F2}
+	sleep 1000
+	clip_reset()
+	Return
+Return
 
 ^+0:: tmc()
 
@@ -599,9 +648,6 @@ cmd_ping(){
 	}
 }
 
-clip_save(){
-	clip_old = %clipboard%
-}
 clip_copy(trim=true, doCopy=false){
 	if(doCopy){
 		clip_save()
@@ -621,8 +667,14 @@ clip_past(c){
 	Clipboard := c
 	ClipWait, 2
 	Send ^v
+	clip_reset()
+}
+clip_reset(){
 	Clipboard := clip_old
 	ClipWait, 2
+}
+clip_save(){
+	clip_old = %clipboard%
 }
 
 formateText(){
@@ -875,6 +927,7 @@ loopingNumber(startFrom, numberOfLoops){
 
 loopingPast(){
 	clip_save()
+	Gui,Destroy
 	Gui, Add, Text,, Antal Loops
 	Gui, Add, Edit
 	Gui, Add, UpDown, vUpDownR_antal Range1-10000, 5
@@ -910,6 +963,92 @@ msteams(){
 		Run, C:\Users\%A_UserName%\AppData\Local\Microsoft\Teams\Update.exe --processStart "Teams.exe"
 		SplashText("Teams")
 	}
+}
+
+nextInsert(){
+	if(clip_insert_counter < 0){
+		;// opret variabler med 
+		clip_insert_counter = 0
+		clip_insert_total = %clipboard%
+		;//
+		clip_insert := StrSplit(clip_insert_total, "`n")
+		nextInsert()
+		Return
+	}else{
+		clip_insert_counter++
+			if(clip_insert.Length()<clip_insert_counter){
+			MsgBox Der er ikke flere linjer i insert
+			;// RESET
+			clip_insert_counter = 0
+			Return
+		}
+	}
+	
+	;MsgBox, % clip_insert[clip_insert_counter]
+
+	;clip_save()
+	;sleep 500
+	;;clip_past(clip_insert[clip_insert_counter])
+	;Clipboard := clip_insert[clip_insert_counter]
+	;ClipWait, 2
+	;sleep 500
+	out := trim(clip_insert[clip_insert_counter])
+	Sendinput, {RAW} %out%
+	;Send ^v
+	;sleep 500
+	;clip_reset()
+	
+	if(clip_insert.Length()<=clip_insert_counter){
+		MsgBox Der er ikke flere linjer i insert
+		;// RESET
+		clip_insert_counter = 0
+		Return
+	}
+
+
+	Return
+
+	Gui,Destroy
+	Gui, Add, Text,, Antal Loops
+	Gui, Add, Edit
+	Gui, Add, UpDown, vUpDownR_antal Range1-10000, 5
+	Gui, Add, Text,, Start Fra Nr
+	Gui, Add, Edit
+	Gui, Add, UpDown, vUpDownR_start Range1-10000, 1
+	Gui, Add, Button, Default w80, STOPSCRIPT
+	Guicontrol,,Button1, &OK
+	Gui, Show
+	Return
+
+	buttonSTOPSCRIPT:
+		GuiControlGet, UpDownR_start 
+		GuiControlGet, UpDownR_antal
+		Gui,Destroy
+		clip_past(loopingNumber(UpDownR_start,UpDownR_antal))
+		Return
+}
+nextInsertReset(){
+	MsgBox, 4, , vil du resette insert
+		IfMsgBox, No
+			Return
+	clip_insert = ""
+	clip_insert_counter = -1
+	clip_insert_total = ""
+}
+
+nextInsertStartOver(){
+	h:= (clip_insert.Length()+1)
+	if(clip_insert_counter<1){
+		Return
+	}
+	if(h>0){
+		MsgBox, 4, , vil du starte forfra INSERT (%clip_insert_counter% / %h%)
+			IfMsgBox, No
+				Return
+
+		clip_insert_counter = 0
+	}
+
 }
 
 outlook(){
