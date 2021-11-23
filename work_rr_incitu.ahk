@@ -147,22 +147,27 @@ return
 	return
 
 	::td::
-		Send %A_YYYY%%A_MM%%A_DD%
+		SendInput %A_YYYY%%A_MM%%A_DD%
 	Return
 
 	::tdt::
-		Send %A_YYYY%-%A_MM%-%A_DD% %A_Hour%:%A_Min%
+		SendInput %A_YYYY%-%A_MM%-%A_DD% %A_Hour%:%A_Min%
 	Return
 
 	::tdf::
-		Send %A_YYYY%-%A_MM%-%A_DD%-%A_Hour%%A_Min%_
+		SendInput %A_YYYY%-%A_MM%-%A_DD%-%A_Hour%%A_Min%_
 	Return
-	::Ftd::
-		Send _%A_YYYY%-%A_MM%-%A_DD%-%A_Hour%%A_Min%
+	
+	::ftd::
+		SendInput _%A_YYYY%-%A_MM%-%A_DD%-%A_Hour%%A_Min%
 	Return
 
 	::tdff::
-		Send %A_YYYY%%A_MM%%A_DD%-%A_Hour%%A_Min%_
+		SendInput %A_YYYY%%A_MM%%A_DD%-%A_Hour%%A_Min%_
+	Return
+
+	::ftdf::
+		SendInput _%A_YYYY%%A_MM%%A_DD%-%A_Hour%%A_Min%
 	Return
 	;////////////////////- END - time -////////////////////
 
@@ -182,7 +187,7 @@ Return
 :*:iuk::
 	Send incitu.dk
 Return
-::rr::
+:*:rrr::
 	Send Rasmus Rahbek{SPACE}
 Return
 ::rw::
@@ -993,7 +998,7 @@ nextInsert(){
 	;ClipWait, 2
 	;sleep 500
 	out := trim(clip_insert[clip_insert_counter])
-	Sendinput, {RAW} %out%
+	Sendinput,{RAW}%out%
 	;Send ^v
 	;sleep 500
 	;clip_reset()
