@@ -1,7 +1,10 @@
-;/////////////////////- Functioner til fÃ¦llesbrug -////////////////////
+;/////////////////////- Functioner til fællesbrug -////////////////////
 
-checkTitle(reg){
+checkTitle(reg, print=false){
 	WinGetTitle, title, A
+	if(print){
+		MsgBox %title%
+	}
 	
 	out := RegExMatch(title, reg, m)
 	if(out>0){
